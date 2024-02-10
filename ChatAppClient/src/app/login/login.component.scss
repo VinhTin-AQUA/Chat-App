@@ -1,0 +1,36 @@
+.wrapper {
+    @apply h-screen  overflow-y-auto bg-[#f9a8d4];
+}
+
+.custom-container {
+    @apply h-full flex justify-center items-center;
+}
+
+.info {
+    width: 100%;
+}
+
+.login-container {
+    @apply flex flex-col justify-start items-center;
+    width: 300px;
+    height: 400px;
+}
+
+.input {
+    @apply border outline-none w-full my-2 p-2 rounded;
+    transition: all 100ms ease;
+
+    &:focus {
+        box-shadow: 0px 0px 3px red;
+    }
+}
+
+.other-info {
+    @apply flex justify-between text-blue-500;
+
+    a {
+        &:hover {
+            @apply text-blue-700;
+        }
+    }
+}
