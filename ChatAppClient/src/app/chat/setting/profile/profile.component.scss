@@ -1,23 +1,21 @@
 .wrapper {
-	@apply flex items-center;
-	overflow: auto;
+	@apply p-2 h-screen overflow-auto;
 	font-family: 'Roboto';
-	min-height: 100vh;
 }
 
-.container {
-	@apply mx-auto bg-[#fbcfe8] rounded-3xl w-full mx-10;
+.container-fluid {
+	@apply mx-auto bg-[#fbcfe8] rounded-md p-2  w-full;
 }
 
 .content {
 	@apply p-10 text-center text-[#be123c];
 	h3 {
-		@apply text-4xl;
+		@apply text-2xl;
 	}
 }
 
 .infomation {
-	@apply flex mx-auto flex-wrap flex-col md:flex-row bg-[#fbcfe8] rounded-3xl ;
+	@apply flex mx-auto flex-wrap flex-col md:flex-row bg-[#fbcfe8] rounded-3xl;
 }
 
 .avatar,

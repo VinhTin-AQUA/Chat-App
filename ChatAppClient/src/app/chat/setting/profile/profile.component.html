@@ -1,0 +1,90 @@
+<div class="wrapper">
+	<div class="container-fluid">
+		<div class="content">
+			<h3>Your information</h3>
+		</div>
+
+		<div class="infomation">
+			<div class="avatar">
+				<div [ngStyle]="{ 'background-image': backgroundAvatar }"></div>
+			</div>
+
+			<form [formGroup]="registerForm" class="info">
+				<div>
+					<small *ngIf="isSubmit == true && registerForm.hasError('required', 'fullName')"
+						>*Full name is required</small
+					>
+					<input formControlName="fullName" type="text" placeholder="Full name" />
+				</div>
+
+				<div>
+					<small *ngIf="isSubmit == true && registerForm.hasError('email', 'email')"
+						>*Email is incorrect</small
+					>
+
+					<small *ngIf="isSubmit == true && registerForm.hasError('required', 'email')"
+						>*Email is required</small
+					>
+					<input formControlName="email" type="text" placeholder="Your email" />
+				</div>
+
+				<!-- <div>
+					<small *ngIf="isSubmit == true && registerForm.hasError('required', 'password')"
+						>*Password is required</small
+					>
+
+					<small
+						*ngIf="isSubmit == true && registerForm.hasError('minlength', 'password')"
+						>*Password must be at least 8 characters</small
+					>
+
+					<input
+						formControlName="password"
+						type="password"
+						placeholder="Enter password"
+					/>
+				</div> -->
+
+				<!-- <div>
+					<small
+						*ngIf="
+							isSubmit == true && registerForm.hasError('required', 'reEnterPassword')
+						"
+						>*Re-enter Password is required</small
+					>
+
+					<small *ngIf="registerForm.controls['reEnterPassword'].dirty"
+						>*Re-enter Password is incorrect</small
+					>
+
+					<input
+						(input)="onChangeReenterPassword()"
+						formControlName="reEnterPassword"
+						type="password"
+						placeholder="Re-enter password"
+					/>
+				</div> -->
+
+                <div>
+					<small *ngIf="isSubmit == true && registerForm.hasError('required', 'fullName')"
+						>*Full name is required</small
+					>
+					<input formControlName="fullName" type="text" placeholder="Phone name" />
+				</div>
+
+				<div class="flex items-center gap-2">
+					<input
+						(change)="onSelectedAvatar($event)"
+						type="file"
+						id="files"
+						style="display: none"
+					/>
+					<label for="files" class="btn-default">Choose your avatar</label>
+					<span>{{ avatarFileName }}</span>
+				</div>
+
+				<button (click)="onRegister()" class="btn-danger w-full">Save</button>
+			</form>
+		</div>
+	</div>
+</div>

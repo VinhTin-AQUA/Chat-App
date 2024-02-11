@@ -91,10 +91,10 @@
             (change)="onSelectedAvatar($event)"
             type="file"
             id="files"
-            class="hidden"
+            style="display: none;"
           />
-          <label for="files" class="btn-default">Choose your avatar</label>
-          <span>{{ avatarFileName }}</span>
+          <label class="btn-default" for="files">Choose your avatar</label>
+         
         </div>
 
         <button (click)="onRegister()" class="btn-danger w-full">

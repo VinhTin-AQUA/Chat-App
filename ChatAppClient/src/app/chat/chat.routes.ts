@@ -12,7 +12,7 @@ export const routes: Routes = [
 			{ path: '', redirectTo: 'conversations', pathMatch: 'full' },
 			{ path: 'conversations', component: ConversationComponent, title: 'Conversations' },
 			{ path: 'groups', component: GroupComponent, title: 'Groups' },
-			{ path: 'settings', component: SettingComponent, title: 'Settings' },
+			{ path: 'settings', loadChildren: () => import('./setting/setting.routes').then(r => r.routes) },
 		],
 	},
 ];
