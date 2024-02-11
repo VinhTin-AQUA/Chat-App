@@ -1,0 +1,11 @@
+.wrapper {
+    @apply flex gap-2;
+}
+
+.sidebar {
+    width: 50px;
+}
+
+.content {
+    @apply w-full;
+}
