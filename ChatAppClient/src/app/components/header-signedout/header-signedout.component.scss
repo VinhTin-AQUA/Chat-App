@@ -1,0 +1,11 @@
+header {
+    box-shadow:  0px 0px 4px 1px #e11d48;
+}
+
+.logo img{
+    height: 40px;
+}
+
+.other {
+    @apply flex gap-2;
+}
