@@ -7,7 +7,7 @@ import { ConversationComponent } from './chat/conversation/conversation.componen
 import { ChangePasswordConfirmComponent } from './change-password-confirm/change-password-confirm.component';
 
 export const routes: Routes = [
-	{ path: '', redirectTo: 'chat', pathMatch: 'full' },
+	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent, title: 'Login' },
 	{ path: 'register', component: RegisterComponent, title: 'Register' },
 	{ path: 'forgot-password', component: ForgotPasswordComponent, title: 'Forgot password' },
