@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
-using AspNetCore.Identity.MongoDbCore.Models;
 using ChatAppServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,6 +13,8 @@ using ChatAppServer.Schema.Queries;
 using ChatAppServer.Schema.Mutations;
 using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Repositories;
+using AppAny.HotChocolate.FluentValidation;
+using ChatAppServer.Schema.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,7 +79,10 @@ builder.Services.AddGraphQLServer()
         .AddTypeExtension<UserQuery>()
     .AddMutationType<Mutation>()
         .AddTypeExtension<UserMutation>()
-    .AddType<UserType>();
+    .AddType<UserType>()
+    .AddFluentValidation();
+
+builder.Services.AddTransient<RegisterInputTypeValidator>();
 
 // repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();

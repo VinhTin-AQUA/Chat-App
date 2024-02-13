@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AppAny.HotChocolate.FluentValidation" Version="0.11.1" />
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.2" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.8.1" />
     <PackageReference Include="HotChocolate.Data.MongoDb" Version="13.8.1" />
