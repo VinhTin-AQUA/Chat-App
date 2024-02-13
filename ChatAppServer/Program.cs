@@ -1,35 +1,27 @@
+using ChatAppServer.Data;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
-using ChatAppServer.Models;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AspNetCore.Identity.MongoDbCore.Models;
+using ChatAppServer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ChatAppServer.Schema.Types;
 using ChatAppServer.Schema.Queries;
+using ChatAppServer.Schema.Mutations;
+using ChatAppServer.Repositories.IRepositories;
+using ChatAppServer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.Configure<MongoSetting>(builder.Configuration.GetSection("MongoSettings"));
 BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeSerializer(MongoDB.Bson.BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(MongoDB.Bson.BsonType.String));
-
-// mongo setting servics
-builder.Services.Configure<MongoDbSetting>(builder.Configuration.GetSection("MongoSettings"));
-//builder.Services.AddSingleton<MongoDbSetting>(builder.Configuration.GetSection("MongoSettings").Get<MongoDbSetting>()!);
-
-// graphql
-builder.Services.AddGraphQLServer()
-    .AddQueryType<Query>()
-        .AddTypeExtension<UserQuery>()
-        .AddTypeExtension<GroupQuery>()
-        .AddTypeExtension<MessageQuery>()
-    .AddType<UserType>()
-    .AddType<MessageType>()
-    .AddType<GroupType>()
-    ;
 
 // mongo db
 var mongoIdentityConfigs = new MongoDbIdentityConfiguration
@@ -44,8 +36,9 @@ var mongoIdentityConfigs = new MongoDbIdentityConfiguration
     {
         options.Password.RequireDigit = false;
         options.Password.RequiredLength = 8;
-        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = false;
 
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         options.Lockout.MaxFailedAccessAttempts = 3;
@@ -60,13 +53,14 @@ builder.Services.ConfigureMongoDbIdentity<AppUser, AppRole, Guid>(mongoIdentityC
     .AddRoleManager<RoleManager<AppRole>>()
     .AddDefaultTokenProviders();
 
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
 {
-    x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
         ValidateIssuer = true,
@@ -79,18 +73,17 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
+builder.Services.AddGraphQLServer()
+    .AddQueryType<Query>()
+        .AddTypeExtension<UserQuery>()
+    .AddMutationType<Mutation>()
+        .AddTypeExtension<UserMutation>()
+    .AddType<UserType>();
 
-builder.Services.AddCors(c =>
-{
-    c.AddPolicy("AllowOrigin", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-});
-
-
+// repos
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
-
-app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
 
 //app.MapGet("/", () => "Hello World!");
 app.MapGraphQL();

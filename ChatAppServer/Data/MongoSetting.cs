@@ -1,6 +1,6 @@
-﻿namespace ChatAppServer.Models
+﻿namespace ChatAppServer.Data
 {
-    public class MongoDbSetting
+    public class MongoSetting
     {
         public string ConnectionUri { get; set; } = string.Empty;
         public string DatabaseName { get; set; } = string.Empty;

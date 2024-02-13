@@ -12,6 +12,5 @@ namespace ChatAppServer.Models
         public List<string> FriendIds { get; set; } = [];
 
         public List<string> GroupIds { get; set; } = [];
-
     }
 }
