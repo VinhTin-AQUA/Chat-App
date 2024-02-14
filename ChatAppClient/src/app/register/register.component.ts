@@ -6,6 +6,8 @@ import { Apollo, ApolloModule } from 'apollo-angular';
 import { CREATE_USER } from '../graphql/mutations/userMutation';
 import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { RegisterRequest } from '../shared/models/registerRequest';
 
 @Component({
 	selector: 'app-register',
@@ -26,8 +28,8 @@ export class RegisterComponent {
 	constructor(
 		private formBuilder: FormBuilder,
 		private http: HttpClient,
-		private apollo: Apollo,
-		private router: Router
+		private router: Router,
+		private auth: AuthService
 	) {}
 
 	ngOnInit() {
@@ -68,29 +70,26 @@ export class RegisterComponent {
 			return;
 		}
 
-		this.apollo
-			.mutate({
-				mutation: CREATE_USER,
-				variables: {
-					email: this.registerForm.controls['email'].value,
-					fullName: this.registerForm.controls['fullName'].value,
-					password: this.registerForm.controls['password'].value,
-					reEnterPassword: this.registerForm.controls['reEnterPassword'].value,
-					avatarUrl: '',
-				},
-			})
-			.subscribe({
-				next: (result: any) => {
-					if (result.data.createUser.success === true) {
-						this.router.navigateByUrl('/login');
-					} else {
-						this.errorMessages = result.data.createUser.errorMessages;
-					}
-				},
-				error: err => {
-					console.log(err.message);
-				},
-			});
+		const model: RegisterRequest = {
+			email: this.registerForm.controls['email'].value,
+			fullName: this.registerForm.controls['fullName'].value,
+			password: this.registerForm.controls['password'].value,
+			reEnterPassword: this.registerForm.controls['reEnterPassword'].value,
+			avatarUrl: '',
+		};
+
+		this.auth.register(model).subscribe({
+			next: (result: any) => {
+				if (result.data.createUser.success === true) {
+					this.router.navigateByUrl('/login');
+				} else {
+					this.errorMessages = result.data.createUser.errorMessages;
+				}
+			},
+			error: err => {
+				console.log(err.message);
+			},
+		});
 	}
 
 	private onChangeReenterPassword(): boolean {

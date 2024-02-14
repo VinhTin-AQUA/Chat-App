@@ -9,12 +9,20 @@
 .login-container {
 	@apply flex flex-col justify-start items-center p-5 rounded-md;
 	width: 500px;
-	height: 400px;
+	// height: 400px;
 	box-shadow: 0px 0px 4px 1px #e11d48;
 }
 
 .info {
 	width: 100%;
+
+	.error-message {
+		@apply text-red-500;
+	}
+}
+
+small {
+	@apply text-red-500;
 }
 
 .input {

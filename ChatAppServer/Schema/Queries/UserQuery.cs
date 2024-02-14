@@ -2,6 +2,7 @@
 using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Schema.Types;
 using ChatAppServer.Schema.Types.InputTypes;
+using ChatAppServer.Services.IServices;
 
 namespace ChatAppServer.Schema.Queries
 {
@@ -42,7 +43,7 @@ namespace ChatAppServer.Schema.Queries
             }).ToList();
         }
 
-        public async Task<ResultType> Login(LoginInputType model, [Service] IUserRepository userRepository)
+        public async Task<ResultType> Login(LoginInputType model, [Service] IUserRepository userRepository, [Service]IJwtService jwtService)
         {
             if(model == null)
             {
@@ -52,7 +53,7 @@ namespace ChatAppServer.Schema.Queries
             var user = await userRepository.GetUserByEmail(model.Email);
             if(user == null)
             {
-                return new ResultType(false, ["User not found"], null);
+                return new ResultType(false, ["Email or password is incorrect"], null);
             }
 
             var loginResult = await userRepository.LoginAsync(user, model.Password);
@@ -69,7 +70,7 @@ namespace ChatAppServer.Schema.Queries
                 GroupIds = user.GroupIds,
                 FullName = user.FullName,
                 AvatarUrl = user.AvatarUrl,
-                Token = ""
+                Token = await jwtService.CreateJwt(user)
             });
         }
     }

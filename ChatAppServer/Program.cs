@@ -16,6 +16,8 @@ using ChatAppServer.Repositories;
 using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Schema.Validators;
 using Microsoft.AspNetCore.Mvc;
+using ChatAppServer.Services.IServices;
+using ChatAppServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,6 +90,9 @@ builder.Services.AddTransient<RegisterInputTypeValidator>();
 
 // repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// services
+builder.Services.AddTransient<IJwtService, JwtService>();
 
 // enable cors
 builder.Services.AddCors(c =>

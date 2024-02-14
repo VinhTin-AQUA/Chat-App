@@ -1,116 +1,82 @@
 <div class="wrapper">
-  <div class="container">
-    <div class="content">
-      <h3>IDecord</h3>
-      <span>Join with us - Connect to everyone</span>
-    </div>
+	<div class="container">
+		<div class="content">
+			<h3>IDecord</h3>
+			<span>Join with us - Connect to everyone</span>
+		</div>
 
-    <div class="infomation">
-      <div class="avatar">
-        <div [ngStyle]="{ 'background-image': backgroundAvatar }"></div>
-      </div>
+		<div class="infomation">
+			<div class="avatar">
+				<div [ngStyle]="{ 'background-image': backgroundAvatar }"></div>
+			</div>
 
-      <form [formGroup]="registerForm" class="info">
+			<form [formGroup]="registerForm" class="info">
+				<!-- error message -->
+				<div class="error-message">
+					<ul>
+						@for (err of errorMessages; track $index) {
+						<li>{{ err }}</li>
+						}
+					</ul>
+				</div>
 
-        <!-- error message -->
-        <div class="error-message">
-          <ul>
-            @for (err of errorMessages; track $index) {
-              <li>{{err}}</li>
-            }
-          </ul>
-        </div>
+				<div>
+					@if (isSubmit == true && registerForm.hasError('required', 'fullName')) {
+					<small>*Full name is required</small>
+					}
 
+					<input formControlName="fullName" type="text" placeholder="Full name" />
+				</div>
 
-        <div>
-          <small
-            *ngIf="
-              isSubmit == true && registerForm.hasError('required', 'fullName')
-            "
-            >*Full name is required</small
-          >
-          <input
-            formControlName="fullName"
-            type="text"
-            placeholder="Full name"
-          />
-        </div>
+				<div>
+					@if (isSubmit == true && registerForm.hasError('email', 'email')) {
+					<small>*Email is incorrect</small>
+					} @if (isSubmit == true && registerForm.hasError('required', 'email')) {
+					<small>*Email is required</small>
+					}
 
-        <div>
-          <small
-            *ngIf="isSubmit == true && registerForm.hasError('email', 'email')"
-            >*Email is incorrect</small
-          >
+					<input formControlName="email" type="text" placeholder="Your email" />
+				</div>
 
-          <small
-            *ngIf="
-              isSubmit == true && registerForm.hasError('required', 'email')
-            "
-            >*Email is required</small
-          >
-          <input formControlName="email" type="text" placeholder="Your email" />
-        </div>
+				<div>
+					@if (isSubmit == true && registerForm.hasError('required', 'password')) {
+					<small>*Password is required</small>
+					} @if (isSubmit == true && registerForm.hasError('minlength', 'password')) {
+					<small>*Password must be at least 8 characters</small>
+					}
 
-        <div>
-          <small
-            *ngIf="
-              isSubmit == true && registerForm.hasError('required', 'password')
-            "
-            >*Password is required</small
-          >
+					<input
+						formControlName="password"
+						type="password"
+						placeholder="Enter password"
+					/>
+				</div>
 
-          <small
-            *ngIf="
-              isSubmit == true && registerForm.hasError('minlength', 'password')
-            "
-            >*Password must be at least 8 characters</small
-          >
+				<div>
+					@if (isSubmit == true && registerForm.hasError('required', 'reEnterPassword')) {
+					<small>*Re-enter Password is required</small>
+					} @if (registerForm.controls['reEnterPassword'].dirty) {
+					<small>*Re-enter Password is incorrect</small>}
 
-          <input
-            formControlName="password"
-            type="password"
-            placeholder="Enter password"
-          />
-        </div>
+					<input
+						formControlName="reEnterPassword"
+						type="password"
+						placeholder="Re-enter password"
+					/>
+				</div>
 
-        <div>
-          <small
-            *ngIf="
-              isSubmit == true &&
-              registerForm.hasError('required', 'reEnterPassword')
-            "
-            >*Re-enter Password is required</small
-          >
+				<div class="flex items-center gap-2">
+					<input
+						(change)="onSelectedAvatar($event)"
+						type="file"
+						id="files"
+						style="display: none"
+					/>
+					<label class="btn-default" for="files">Choose your avatar</label>
+				</div>
 
-          <small
-            *ngIf="
-             registerForm.controls['reEnterPassword'].dirty
-            "
-            >*Re-enter Password is incorrect</small
-          >
-
-          <input
-            formControlName="reEnterPassword"
-            type="password"
-            placeholder="Re-enter password"
-          />
-        </div>
-
-        <div class="flex items-center gap-2">
-          <input
-            (change)="onSelectedAvatar($event)"
-            type="file"
-            id="files"
-            style="display: none;"
-          />
-          <label class="btn-default" for="files">Choose your avatar</label>
-         
-        </div>
-
-        <button (click)="onRegister()" class="btn-danger w-full">
-          Register
-        </button>
-      </form>
-    </div>
-  </div>
+				<button (click)="onRegister()" class="btn-danger w-full">Register</button>
+			</form>
+		</div>
+	</div>
 </div>

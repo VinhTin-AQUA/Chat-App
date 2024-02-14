@@ -2,8 +2,8 @@
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
-import { APOLLO_FLAGS, APOLLO_OPTIONS } from 'apollo-angular';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { APOLLO_FLAGS, APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink, InMemoryCache } from '@apollo/client/core';
 
 
@@ -26,5 +26,7 @@ export const appConfig: ApplicationConfig = {
         }),
       };
     },
-  }]
+  }, importProvidersFrom(
+    ApolloModule
+  )]
 };

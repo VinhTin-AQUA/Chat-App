@@ -15,3 +15,13 @@ export const GET_ALL_USER = gql`
 		}
 	}
 `;
+
+export const LOGIN = gql`
+	query ($email: String!, $password: String!) {
+		login(model: { email: $email, password: $password }) {
+			success
+			errorMessages
+			data
+		}
+	}
+`;

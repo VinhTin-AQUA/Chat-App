@@ -5,22 +5,44 @@
 				<img width="250" src="/assets/logo.png" alt="" />
 			</div>
 
-			<div class="info">
-				<div class="">
-					<input class="input" type="text" placeholder="email" />
+			<form [formGroup]="loginGormGroup" class="info">
+				<!-- error message -->
+				<div class="error-message">
+					<ul>
+						@for (err of errorMessages; track $index) {
+						<li>{{ err }}</li>
+						}
+					</ul>
 				</div>
 
 				<div class="">
-					<input class="input" type="password" placeholder="password" />
+					@if (submitted === true && loginGormGroup.hasError("email","email")) {
+					<small> *Email is incorrect </small>
+					} @if (submitted === true && loginGormGroup.hasError("required","email")) {
+					<small> *Email is required </small>
+					}
+					<input formControlName="email" class="input" type="text" placeholder="email" />
 				</div>
 
-				<button class="btn-danger w-full">Login</button>
+				<div class="">
+					@if (submitted === true && loginGormGroup.hasError("required","password")) {
+					<small> *Password is required </small>
+					}
+					<input
+						formControlName="password"
+						class="input"
+						type="password"
+						placeholder="password"
+					/>
+				</div>
+
+				<button (click)="onLogin()" class="btn-danger w-full">Login</button>
 
 				<div class="other-info">
 					<a routerLink="/register">Create new account</a>
 					<a routerLink="/forgot-password">Forgot password</a>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 </div>
