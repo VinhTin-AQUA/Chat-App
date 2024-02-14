@@ -16,6 +16,7 @@
 	}
 }
 
+
 .infomation {
 	@apply flex mx-auto flex-wrap flex-col md:flex-row bg-[#fbcfe8] rounded-3xl ;
 }
@@ -54,5 +55,9 @@
 
 	div small {
 		@apply text-red-600;
+	}
+
+	.error-message {
+		@apply text-red-500;
 	}
 }

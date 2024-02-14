@@ -11,6 +11,17 @@
       </div>
 
       <form [formGroup]="registerForm" class="info">
+
+        <!-- error message -->
+        <div class="error-message">
+          <ul>
+            @for (err of errorMessages; track $index) {
+              <li>{{err}}</li>
+            }
+          </ul>
+        </div>
+
+
         <div>
           <small
             *ngIf="
@@ -79,7 +90,6 @@
           >
 
           <input
-          (input)="onChangeReenterPassword()"
             formControlName="reEnterPassword"
             type="password"
             placeholder="Re-enter password"

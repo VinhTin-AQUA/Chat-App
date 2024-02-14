@@ -1,20 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
-import {
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	ReactiveFormsModule,
-	Validators,
-} from '@angular/forms';
-import { AuthService } from '../shared/services/auth.service';
-
+import { Component, Query } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Apollo, ApolloModule } from 'apollo-angular';
+import { CREATE_USER } from '../graphql/mutations/userMutation';
+import { catchError, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-register',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+	imports: [CommonModule, ReactiveFormsModule, HttpClientModule, ApolloModule],
 	templateUrl: './register.component.html',
 	styleUrl: './register.component.scss',
 })
@@ -24,10 +20,15 @@ export class RegisterComponent {
 	avatarAdd: any;
 	registerForm!: FormGroup;
 	isSubmit: boolean = false;
+	data: any;
+	errorMessages: string[] = [];
 
-	constructor(private formBuilder: FormBuilder, 
-    private http: HttpClient,
-    private authService: AuthService) {}
+	constructor(
+		private formBuilder: FormBuilder,
+		private http: HttpClient,
+		private apollo: Apollo,
+		private router: Router
+	) {}
 
 	ngOnInit() {
 		this.registerForm = this.formBuilder.group({
@@ -59,31 +60,40 @@ export class RegisterComponent {
 
 	onRegister() {
 		this.isSubmit = true;
-
-		if (this.registerForm.invalid) {
+		if (this.registerForm.invalid === true) {
 			return;
 		}
 
-		let form = new FormData();
-		form.append('file', this.avatarAdd);
-		form.append('fullName', this.registerForm.controls['fullName'].value);
-		form.append('email', this.registerForm.controls['email'].value);
-		form.append('password', this.registerForm.controls['password'].value);
-		form.append('reEnterPassword', this.registerForm.controls['reEnterPassword'].value);
+		if (this.onChangeReenterPassword() === false) {
+			return;
+		}
 
-    this.authService.register(form).subscribe({
-      next: (res) => {
-        console.log(res);
-        
-      },
-      error: (err) => {
-        console.log(err);
-        
-      }
-    })
+		this.apollo
+			.mutate({
+				mutation: CREATE_USER,
+				variables: {
+					email: this.registerForm.controls['email'].value,
+					fullName: this.registerForm.controls['fullName'].value,
+					password: this.registerForm.controls['password'].value,
+					reEnterPassword: this.registerForm.controls['reEnterPassword'].value,
+					avatarUrl: '',
+				},
+			})
+			.subscribe({
+				next: (result: any) => {
+					if (result.data.createUser.success === true) {
+						this.router.navigateByUrl('/login');
+					} else {
+						this.errorMessages = result.data.createUser.errorMessages;
+					}
+				},
+				error: err => {
+					console.log(err.message);
+				},
+			});
 	}
 
-	onChangeReenterPassword() {
+	private onChangeReenterPassword(): boolean {
 		if (
 			this.registerForm.controls['password'].value !==
 			this.registerForm.controls['reEnterPassword'].value
@@ -91,11 +101,11 @@ export class RegisterComponent {
 			this.registerForm.controls['reEnterPassword'].markAsDirty({
 				onlySelf: true,
 			});
-			return;
+			return false;
 		}
-
 		this.registerForm.controls['reEnterPassword'].markAsPristine({
 			onlySelf: true,
 		});
+		return true;
 	}
 }

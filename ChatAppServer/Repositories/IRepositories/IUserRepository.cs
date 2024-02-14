@@ -8,5 +8,7 @@ namespace ChatAppServer.Repositories.IRepositories
         Task<IdentityResult> CreateUserAsync(AppUser user, string password);
         Task<AppUser> GetUserByEmail(string email);
         List<AppUser> GetAllUsers();
+
+        Task<SignInResult> LoginAsync(AppUser user, string password);
     }
 }

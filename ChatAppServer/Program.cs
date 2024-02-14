@@ -15,6 +15,7 @@ using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Repositories;
 using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Schema.Validators;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,7 @@ builder.Services.AddGraphQLServer()
     .AddMutationType<Mutation>()
         .AddTypeExtension<UserMutation>()
     .AddType<UserType>()
+    .AddType<ResultType>()
     .AddFluentValidation();
 
 builder.Services.AddTransient<RegisterInputTypeValidator>();
@@ -87,7 +89,18 @@ builder.Services.AddTransient<RegisterInputTypeValidator>();
 // repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// enable cors
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
+
 var app = builder.Build();
+
+// enable cors
+app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
 //app.MapGet("/", () => "Hello World!");
 app.MapGraphQL();

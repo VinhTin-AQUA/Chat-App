@@ -7,10 +7,12 @@ namespace ChatAppServer.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public UserRepository(UserManager<AppUser> userManager)
+        public UserRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IdentityResult> CreateUserAsync(AppUser user, string password)
@@ -29,6 +31,12 @@ namespace ChatAppServer.Repositories
         {
             var users = userManager.Users.ToList();
             return users;
+        }
+
+        public async Task<SignInResult> LoginAsync(AppUser user, string password)
+        {
+            var r = await signInManager.CheckPasswordSignInAsync(user, password, true);
+            return r;
         }
     }
 }

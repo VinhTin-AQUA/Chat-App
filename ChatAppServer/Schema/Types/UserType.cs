@@ -9,5 +9,7 @@
         public List<string> FriendIds { get; set; } = [];
 
         public List<string> GroupIds { get; set; } = [];
+        public string Token { get; set; } = string.Empty;
+
     }
 }
