@@ -15,7 +15,6 @@ using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Repositories;
 using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Schema.Validators;
-using Microsoft.AspNetCore.Mvc;
 using ChatAppServer.Services.IServices;
 using ChatAppServer.Services;
 
@@ -27,7 +26,8 @@ BsonSerializer.RegisterSerializer(new GuidSerializer(MongoDB.Bson.BsonType.Strin
 BsonSerializer.RegisterSerializer(new DateTimeSerializer(MongoDB.Bson.BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(MongoDB.Bson.BsonType.String));
 
-// mongo db
+#region mongo identity
+// 
 var mongoIdentityConfigs = new MongoDbIdentityConfiguration
 {
     MongoDbSettings = new MongoDbSettings
@@ -57,7 +57,9 @@ builder.Services.ConfigureMongoDbIdentity<AppUser, AppRole, Guid>(mongoIdentityC
     .AddRoleManager<RoleManager<AppRole>>()
     .AddDefaultTokenProviders();
 
+#endregion
 
+#region auth
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -73,20 +75,33 @@ builder.Services.AddAuthentication(x =>
         ValidIssuer = builder.Configuration.GetSection("JwtConfig:ValidIssuer").Value,
         ValidAudience = builder.Configuration.GetSection("JwtConfig:ValidAudience").Value,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtConfig:SecretKey").Value!)),
+
         ClockSkew = TimeSpan.Zero
     };
 });
 
+builder.Services.AddAuthorization(o =>
+{
+    
+});
+
+#endregion
+
+// graphql server
 builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
         .AddTypeExtension<UserQuery>()
+        .AddTypeExtension<AuthQuery>()
     .AddMutationType<Mutation>()
         .AddTypeExtension<UserMutation>()
     .AddType<UserType>()
     .AddType<ResultType>()
+    .AddAuthorization()
     .AddFluentValidation();
 
 builder.Services.AddTransient<RegisterInputTypeValidator>();
+
+#region repose and services
 
 // repos
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -94,18 +109,22 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 // services
 builder.Services.AddTransient<IJwtService, JwtService>();
 
+
+#endregion
+
 // enable cors
 builder.Services.AddCors(c =>
 {
     c.AddPolicy("AllowOrigin", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
-
 var app = builder.Build();
 
 // enable cors
 app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 //app.MapGet("/", () => "Hello World!");
 app.MapGraphQL();

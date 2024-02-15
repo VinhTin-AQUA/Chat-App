@@ -26,6 +26,7 @@ namespace ChatAppServer.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName!),
+                new Claim("email", user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
@@ -33,9 +34,10 @@ namespace ChatAppServer.Services
             var roles = await userManager.GetRolesAsync(user);
             var releClaims = roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
             claims.AddRange(releClaims);
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:SecretKey"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            DateTime expires = DateTime.Now.AddSeconds(30);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            DateTime expires = DateTime.Now.AddDays(1);
 
             var token = new JwtSecurityToken(issuer: configuration["JwtConfig:ValidIssuer"],
                 audience: configuration["JwtConfig:ValidAudience"],

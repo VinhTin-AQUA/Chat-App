@@ -1,4 +1,5 @@
-﻿using ChatAppServer.Schema.Types.InputTypes;
+﻿
+using ChatAppServer.Schema.Types.DTOTypes;
 using FluentValidation;
 
 namespace ChatAppServer.Schema.Validators

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HeaderSignedoutComponent } from '../components/header-signedout/header-signedout.component';
 import { RouterLink } from '@angular/router';
+import { HeaderSignedoutComponent } from '../shared/components/header-signedout/header-signedout.component';
 
 @Component({
 	selector: 'app-forgot-password',

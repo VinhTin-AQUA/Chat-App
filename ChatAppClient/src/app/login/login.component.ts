@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Apollo, ApolloModule } from 'apollo-angular';
-import { LOGIN } from '../graphql/queries/userQuery';
 import { AuthService } from '../services/auth.service';
 import { LoginRequest } from '../shared/models/loginRequest';
+import { UserService } from '../services/user.service';
+import { UserStore } from '../shared/stores/user.store';
 
 @Component({
 	selector: 'app-login',
@@ -17,12 +18,16 @@ export class LoginComponent {
 	loginGormGroup!: FormGroup;
 	submitted: boolean = false;
 	errorMessages: string[] = [];
+	private userStore = inject(UserStore);
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private auth: AuthService,
-		private router: Router
-	) {}
+		private authService: AuthService,
+		private router: Router,
+		private userService: UserService
+	) {
+
+	}
 
 	ngOnInit() {
 		this.loginGormGroup = this.formBuilder.group({
@@ -41,13 +46,15 @@ export class LoginComponent {
 			email: this.loginGormGroup.controls['email'].value,
 			password: this.loginGormGroup.controls['password'].value,
 		};
-		this.auth.login(model).subscribe((result: any) => {
+
+		this.authService.login(model).subscribe((result: any) => {
 			console.log(result.data.login);
 			this.errorMessages = result.data.login.errorMessages;
 
 			if (result.data.login.success === true) {
-				this.auth.saveToken(result.data.login.data.token);
-				this.router.navigateByUrl('/chat')
+				this.userService.setUser(result.data.login);
+				this.authService.saveToken(result.data.login.data.token);
+				this.router.navigateByUrl('/chat');
 			}
 		});
 	}

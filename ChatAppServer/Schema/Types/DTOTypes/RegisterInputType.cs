@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChatAppServer.Schema.Types.InputTypes
+namespace ChatAppServer.Schema.Types.DTOTypes
 {
     public class RegisterInputType
     {

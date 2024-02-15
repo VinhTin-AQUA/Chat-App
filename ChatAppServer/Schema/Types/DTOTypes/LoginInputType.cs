@@ -1,4 +1,4 @@
-﻿namespace ChatAppServer.Schema.Types.InputTypes
+﻿namespace ChatAppServer.Schema.Types.DTOTypes
 {
     public class LoginInputType
     {

@@ -1,6 +1,8 @@
-﻿namespace ChatAppServer.Schema.Types
+﻿using ChatAppServer.Schema.Types.IType;
+
+namespace ChatAppServer.Schema.Types
 {
-    public class UserType
+    public class UserType : IResultType
     {
         public string Email { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;

@@ -2,12 +2,8 @@
 using ChatAppServer.Models;
 using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Schema.Types;
-using ChatAppServer.Schema.Types.InputTypes;
+using ChatAppServer.Schema.Types.DTOTypes;
 using ChatAppServer.Schema.Validators;
-using HotChocolate.AspNetCore;
-using HotChocolate.Execution;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ChatAppServer.Schema.Mutations
 {
@@ -48,5 +44,7 @@ namespace ChatAppServer.Schema.Mutations
                 AvatarUrl = user.AvatarUrl,
             });
         }
+
+        
     }
 }

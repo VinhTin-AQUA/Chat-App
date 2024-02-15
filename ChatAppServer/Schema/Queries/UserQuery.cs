@@ -1,15 +1,14 @@
-﻿using ChatAppServer.Models;
-using ChatAppServer.Repositories.IRepositories;
+﻿using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Schema.Types;
-using ChatAppServer.Schema.Types.InputTypes;
+using ChatAppServer.Schema.Types.DTOTypes;
 using ChatAppServer.Services.IServices;
+using HotChocolate.Authorization;
 
 namespace ChatAppServer.Schema.Queries
 {
     [ExtendObjectType(typeof(Query))]
     public class UserQuery
     {
-        
         public async Task<UserType?> GetUserByEmail(string email, [Service] IUserRepository userRepository)
         {
             var user = await userRepository.GetUserByEmail(email);
@@ -28,6 +27,7 @@ namespace ChatAppServer.Schema.Queries
             };
         }
 
+        [Authorize]
         public List<UserType> GetAllUsers([Service] IUserRepository userRepository)
         {
             var users = userRepository.GetAllUsers();
@@ -39,7 +39,6 @@ namespace ChatAppServer.Schema.Queries
                 AvatarUrl = user.AvatarUrl,
                 FriendIds = user.FriendIds,
                 GroupIds = user.GroupIds,
-
             }).ToList();
         }
 

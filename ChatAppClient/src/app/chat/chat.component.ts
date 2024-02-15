@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SidebarComponent } from '../components/sidebar/sidebar.component';
 import { ConversationComponent } from './conversation/conversation.component';
 import { RouterOutlet } from '@angular/router';
+import { SidebarComponent } from '../shared/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-chat',
