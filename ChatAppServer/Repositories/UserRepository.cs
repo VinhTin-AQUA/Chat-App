@@ -1,42 +1,28 @@
-﻿using ChatAppServer.Models;
+﻿using ChatAppServer.Data;
+using ChatAppServer.Models;
 using ChatAppServer.Repositories.IRepositories;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace ChatAppServer.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
+        private readonly IMongoCollection<AppUser> userCollection;
 
-        public UserRepository(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public UserRepository(IOptions<MongoSetting> options)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            var client = new MongoClient(options.Value.ConnectionUri);
+            var database = client.GetDatabase(options.Value.DatabaseName);
+            userCollection = database.GetCollection<AppUser>(options.Value.UserCollectionName);
         }
 
-        public async Task<IdentityResult> CreateUserAsync(AppUser user, string password)
+        public async Task<List<AppUser>> SearchUsersByName(string name)
         {
-            var r = await userManager.CreateAsync(user, password);
-            return r;
-        }
-
-        public async Task<AppUser> GetUserByEmail(string email)
-        {
-            var user = await userManager.FindByEmailAsync(email);
-            return user!;
-        }
-
-        public List<AppUser> GetAllUsers()
-        {
-            var users = userManager.Users.ToList();
+            var filter = Builders<AppUser>.Filter.Regex(u => u.FullName, new BsonRegularExpression(name, "i"));
+            var users = await userCollection.Find(filter).ToListAsync();
             return users;
-        }
-
-        public async Task<SignInResult> LoginAsync(AppUser user, string password)
-        {
-            var r = await signInManager.CheckPasswordSignInAsync(user, password, true);
-            return r;
         }
     }
 }

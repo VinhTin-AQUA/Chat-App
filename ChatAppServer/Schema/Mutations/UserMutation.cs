@@ -10,7 +10,7 @@ namespace ChatAppServer.Schema.Mutations
     [ExtendObjectType(typeof(Mutation))]
     public class UserMutation
     {
-        public async Task<ResultType> CreateUser([UseFluentValidation, UseValidator<RegisterInputTypeValidator>()]RegisterInputType model, [Service]IUserRepository userRepository)
+        public async Task<ResultType> CreateUser([UseFluentValidation, UseValidator<RegisterInputTypeValidator>()]RegisterInputType model, [Service]IAuthRepository userRepository)
         {
             var userExist = await userRepository.GetUserByEmail(model.Email);
             if(userExist != null)

@@ -104,6 +104,7 @@ builder.Services.AddTransient<RegisterInputTypeValidator>();
 #region repose and services
 
 // repos
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // services

@@ -11,7 +11,7 @@ namespace ChatAppServer.Schema.Queries
     [ExtendObjectType(typeof(Query))]
     public class AuthQuery
     {
-        public async Task<ResultType> GetRefreshRoken(string email, [Service]IUserRepository userRepository, [Service] IJwtService jwtService)
+        public async Task<ResultType> GetRefreshRoken(string email, [Service]IAuthRepository userRepository, [Service] IJwtService jwtService)
         {
             var user = await userRepository.GetUserByEmail(email);
             if(user == null)

@@ -3,6 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 export const chatGuard: CanActivateFn = (route, state) => {
+  return true;
   const userService = inject(UserService);
 	const router = inject(Router);
 

@@ -48,9 +48,7 @@ export class LoginComponent {
 		};
 
 		this.authService.login(model).subscribe((result: any) => {
-			console.log(result.data.login);
 			this.errorMessages = result.data.login.errorMessages;
-
 			if (result.data.login.success === true) {
 				this.userService.setUser(result.data.login);
 				this.authService.saveToken(result.data.login.data.token);

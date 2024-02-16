@@ -37,7 +37,7 @@ namespace ChatAppServer.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:SecretKey"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            DateTime expires = DateTime.Now.AddDays(1);
+            DateTime expires = DateTime.Now.AddDays(30);
 
             var token = new JwtSecurityToken(issuer: configuration["JwtConfig:ValidIssuer"],
                 audience: configuration["JwtConfig:ValidAudience"],

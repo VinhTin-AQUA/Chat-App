@@ -1,46 +1,45 @@
 .wrapper {
-	@apply h-screen  overflow-y-auto bg-[#fbcfe8];
+	@apply h-screen  overflow-y-auto;
+	background-color: var(--bg-wrapper-login);
 }
 
 .custom-container {
-	@apply h-full flex justify-center items-center ;
+	@apply h-full flex justify-center items-center;
 }
 
 .login-container {
 	@apply flex flex-col justify-start items-center p-5 rounded-md;
 	width: 500px;
 	// height: 400px;
-	box-shadow: 0px 0px 4px 1px #e11d48;
+	box-shadow: 0px 0px 4px 1px var(--box-shadow-login-container);
 }
 
 .info {
 	width: 100%;
-
-	.error-message {
-		@apply text-red-500;
-	}
 }
 
 small {
-	@apply text-red-500;
+	color: var(--text-error-login);
+	font-size: 1.1rem;
 }
 
 .input {
 	@apply border outline-none w-full my-2 p-2 rounded;
 	transition: all 100ms ease;
-	box-shadow: 0px 0px 1px 1px #e11d48;
+	box-shadow: 0px 0px 1px 1px var(--box-shadow-input-login);
 
 	&:focus {
-		box-shadow: 0px 0px 3px 2px #e11d48;
+		box-shadow: 0px 0px 3px 2px var(--box-shadow-input-login);
 	}
 }
 
 .other-info {
-	@apply flex justify-between text-blue-500;
+	@apply flex justify-between;
+	color: var(--text-other);
 
 	a {
 		&:hover {
-			@apply text-blue-700;
+			color: var(--text-hover-other);
 		}
 	}
 }

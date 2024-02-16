@@ -16,4 +16,11 @@ export const GET_ALL_USER = gql`
 	}
 `;
 
-
+export const SEARCH_FRIENDS = gql`
+	query ($name: String!) {
+		searchUserByName(name: $name) {
+			fullName
+			avatarUrl
+		}
+	}
+`;
