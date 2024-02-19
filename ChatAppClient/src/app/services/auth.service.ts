@@ -39,10 +39,6 @@ export class AuthService {
 		localStorage.setItem('idecord-token', token);
 	}
 
-	removeToken() {
-		localStorage.removeItem('idecord-token');
-	}
-
 	getToken() {
 		return localStorage.getItem('idecord-token');
 	}

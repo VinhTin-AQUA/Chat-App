@@ -2,7 +2,7 @@
 
 namespace ChatAppServer.Schema.Types
 {
-    public class ResultType
+    public class ResultType 
     {
         public bool Success { get; set; }
         public List<string> ErrorMessages { get; set; } = [];

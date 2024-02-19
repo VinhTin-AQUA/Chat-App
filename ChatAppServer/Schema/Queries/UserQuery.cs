@@ -69,7 +69,5 @@ namespace ChatAppServer.Schema.Queries
                 UniqueCodeUser = user.UniqueCodeUser
             });
         }
-
-  
     }
 }

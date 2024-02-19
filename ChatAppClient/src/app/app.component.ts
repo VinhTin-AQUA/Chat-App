@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterStateSnapshot } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { LoadingStore } from './shared/stores/loading.store';
 import { LoggingInLoadingComponent } from './shared/components/logging-in-loading/logging-in-loading.component';
@@ -23,30 +23,14 @@ export class AppComponent {
 	userStore = inject(UserStore);
 
 	constructor(
-		private apollo: Apollo,
+		
 		private authService: AuthService,
 		private userService: UserService,
-		private router: Router
-	) {}
+		
+	) {
+	}
 
 	ngOnInit() {
-		const token = this.authService.getToken();
-		if (token === null || this.userService.isLoggedIn() === false) {
-			this.userService.clearUser();
-			this.authService.removeToken();
-			this.router.navigateByUrl('/login');
-			return;
-		}
 
-		var decoded:any = jwtDecode(token);
-		this.apollo.query({
-			query: GET_USER_BY_EMAIL,
-			variables: {
-				email: decoded.email,
-			},
-		}).subscribe((result: any) => {
-			this.userService.setUser(result.data.userByEmail)
-			this.router.navigateByUrl('/chat');
-		});
 	}
 }

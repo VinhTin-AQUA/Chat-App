@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { AuthService } from '../services/auth.service';
 import { LoginRequest } from '../shared/models/loginRequest';
 import { UserService } from '../services/user.service';
-import { UserStore } from '../shared/stores/user.store';
+import { jwtDecode } from 'jwt-decode';
+import { GET_USER_BY_EMAIL } from '../graphql/queries/userQuery';
 
 @Component({
 	selector: 'app-login',
@@ -18,13 +19,13 @@ export class LoginComponent {
 	loginGormGroup!: FormGroup;
 	submitted: boolean = false;
 	errorMessages: string[] = [];
-	private userStore = inject(UserStore);
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private authService: AuthService,
 		private router: Router,
-		private userService: UserService
+		private userService: UserService,
+		private apollo: Apollo,
 	) {
 
 	}
@@ -34,6 +35,33 @@ export class LoginComponent {
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', [Validators.required]],
 		});
+
+		const token = this.authService.getToken();
+		if (token === null || this.userService.isLoggedIn() === false) {
+			this.userService.logout();
+			this.router.navigateByUrl('/login');
+			return;
+		}
+
+		var decoded: any = jwtDecode(token);
+		this.apollo
+			.query({
+				query: GET_USER_BY_EMAIL,
+				variables: {
+					email: decoded.email,
+				},
+			})
+			.subscribe((result: any) => {
+				if (result.data.userByEmail === null) {
+					console.log(result.data.userByEmail === null);
+					this.userService.logout();
+					this.router.navigateByUrl('/login');
+					return;
+				}
+				
+				this.userService.setUser(result.data.userByEmail);
+				this.router.navigateByUrl('/chat');
+			});
 	}
 
 	onLogin() {

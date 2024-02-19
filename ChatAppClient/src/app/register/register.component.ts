@@ -77,7 +77,6 @@ export class RegisterComponent {
 			reEnterPassword: this.registerForm.controls['reEnterPassword'].value,
 			avatarUrl: '',
 		};
-
 		this.auth.register(model).subscribe({
 			next: (result: any) => {
 				if (result.data.createUser.success === true) {

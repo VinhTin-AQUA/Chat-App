@@ -33,12 +33,13 @@ export class UserService {
 		});
 	}
 
-	clearUser() {
+	logout() {
 		patchState(this.userStore, {
 			email: '',
 			avatarUrl: '',
 			fullName: '',
 		});
+		localStorage.removeItem('idecord-token');
 	}
 
 	isLoggedIn() {

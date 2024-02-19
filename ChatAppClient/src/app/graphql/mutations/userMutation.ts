@@ -19,7 +19,11 @@ export const CREATE_USER = gql`
 		) {
 			success
 			errorMessages
-			data
+			data {
+				... on UserType {
+					fullName
+				}
+			}
 		}
 	}
 `;

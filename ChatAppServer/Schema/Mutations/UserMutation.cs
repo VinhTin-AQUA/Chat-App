@@ -26,8 +26,9 @@ namespace ChatAppServer.Schema.Mutations
                 FullName = model.FullName,
                 UserName = model.Email,
                 AvatarUrl = model.AvatarUrl,
-                PhoneNumber = ""
-            };
+                PhoneNumber = "",
+                UniqueCodeUser = Guid.NewGuid().ToString().Substring(0, 8)
+        };
 
             var r = await userRepository.CreateUserAsync(user, model.Password);
             if(r.Succeeded == false)

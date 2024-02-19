@@ -27,8 +27,7 @@ export class MenuChatComponent {
 
 	onLogout(event: Event) {
 		event.stopPropagation();
-		this.userService.clearUser();
-		this.authService.removeToken();
+		this.userService.logout();
 		this.router.navigateByUrl('/login');
 	}
 
