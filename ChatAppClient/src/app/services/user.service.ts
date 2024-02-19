@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { GET_ALL_USER, SEARCH_FRIENDS } from '../graphql/queries/userQuery';
+import { GET_ALL_USER } from '../graphql/queries/userQuery';
 import { UserStore } from '../shared/stores/user.store';
 import { patchState } from '@ngrx/signals';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -25,9 +25,11 @@ export class UserService {
 
 	setUser(result: any) {
 		patchState(this.userStore, {
-			email: result.data.email,
-			avatarUrl: result.data.avatarUrl,
-			fullName: result.data.fullName,
+			email: result.email,
+			avatarUrl: result.avatarUrl,
+			fullName: result.fullName,
+			phoneNumber: result.phoneNumber,
+			uniqueCodeUser: result.uniqueCodeUser
 		});
 	}
 
@@ -45,14 +47,5 @@ export class UserService {
 		} else {
 			return true;
 		}
-	}
-
-	searchFriends(name: string) {
-		return this.apollo.query({
-			query: SEARCH_FRIENDS,
-			variables: {
-				name: name
-			}
-		})
 	}
 }

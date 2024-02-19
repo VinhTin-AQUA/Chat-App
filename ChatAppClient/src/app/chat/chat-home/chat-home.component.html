@@ -1,0 +1,39 @@
+<div class="wrapper">
+	<div class="container-fluid">
+		<div class="instroduce">
+			<div class="content">
+				<p class="p1">Welcome to IGroupCord</p>
+				<p class="p2">Connect to everyone</p>
+			</div>
+		</div>
+
+		<div class="action">
+			<button (click)="showCreateRoom()" class="btn-danger">Create new room</button>
+
+			<div class="search-group">
+				<img src="/assets/icons/keyboard-solid.svg" alt="" />
+				<input [(ngModel)]="roomCode" type="text" placeholder="Enter group-id" />
+			</div>
+			<button [class]="{'invisible': roomCode === ''}" class="btn-outline-danger">Join</button>
+		</div>
+	</div>
+</div>
+
+<div
+	[class]="{ 'hidden': isShowCreateRoom === false, 'fixed': isShowCreateRoom === true }"
+	class="create-room-modal"
+>
+	<div class="container">
+		<div class="panel">
+			<form>
+				<div class="create-form-group">
+					<input type="text" placeholder="Password" />
+				</div>
+				<div class="flex justify-center items-center gap-4">
+					<button class="btn-danger">Create</button>
+					<button type="button" (click)="showCreateRoom()" class="btn-outline-danger">Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

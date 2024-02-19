@@ -17,6 +17,8 @@ using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Schema.Validators;
 using ChatAppServer.Services.IServices;
 using ChatAppServer.Services;
+using ChatAppServer.Schema.Subcriptions;
+using HotChocolate.AspNetCore.Subscriptions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 
 export const loggedInGuard: CanActivateFn = (route, state) => {
-	return true;
+	// return true;
 	const userService = inject(UserService);
 	const router = inject(Router);
 

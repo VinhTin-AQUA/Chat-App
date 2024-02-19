@@ -1,9 +1,11 @@
 ﻿using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Models;
 using ChatAppServer.Repositories.IRepositories;
+using ChatAppServer.Schema.Subcriptions;
 using ChatAppServer.Schema.Types;
 using ChatAppServer.Schema.Types.DTOTypes;
 using ChatAppServer.Schema.Validators;
+using HotChocolate.Subscriptions;
 
 namespace ChatAppServer.Schema.Mutations
 {
@@ -38,13 +40,11 @@ namespace ChatAppServer.Schema.Mutations
             {
                 Email = user.Email,
                 PhoneNumber= user.PhoneNumber,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
                 FullName = user.FullName,
                 AvatarUrl = user.AvatarUrl,
+                UniqueCodeUser = "tinh sau"
             });
         }
 
-        
     }
 }

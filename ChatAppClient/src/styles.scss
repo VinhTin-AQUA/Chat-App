@@ -10,6 +10,10 @@
 	--hover-filter-icon-setting: brightness(0) saturate(100%) invert(7%) sepia(41%) saturate(6596%)
 		hue-rotate(332deg) brightness(96%) contrast(104%);
 
+	// profile setting
+	--text-profile-setting: #be123c;
+	--bg-profile-setting: #fbcfe8;
+
 	// login
 	--bg-wrapper-login: #fbcfe8;
 	--box-shadow-login-container: #e11d48;
@@ -18,9 +22,16 @@
 	--text-other: #3b82f6;
 	--text-hover-other: #4338ca;
 
-    // search friend
-	--box-shadow-input-search: #fb7185;
-	--bg-item-search: #fecdd3;
+	// menu-chat
+	--box-shadow-menu-chat: #e11d48;
+	--logo-name-menu-chat: #e11d48;
+	--menu-item-hover: brightness(0) saturate(100%) invert(64%) sepia(8%) saturate(4595%) hue-rotate(316deg) brightness(107%) contrast(95%);;
+
+	// chat home
+	--text-color-chat-home: #e11d48;
+	--bg-create-room-chat-home: rgba(225, 29, 72, 0.2);
+	--bg-panel-create-chat-room: #fef2f2;
+
 }
 
 * {
@@ -28,6 +39,7 @@
 	margin: 0;
 	padding: 0;
 	font-family: 'Roboto', sans-serif;
+	user-select: none;
 }
 
 .btn-default {
@@ -44,6 +56,10 @@
 
 .btn-danger {
 	@apply bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 duration-100 block text-center;
+}
+
+.btn-outline-danger {
+	@apply border-2 border-red-600 text-red-600 px-4 py-2 rounded-md hover:bg-red-700 hover:text-white duration-100 block text-center;
 }
 
 .btn-success {

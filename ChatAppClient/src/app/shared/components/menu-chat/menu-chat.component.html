@@ -1,0 +1,43 @@
+<header>
+	<div class="container-fluid">
+		<div class="logo">
+			<img src="/assets/logo.png" alt="" />
+			<span class="logo-name">IGroupCord</span>
+		</div>
+
+		<div class="menu-container">
+			<ul class="menu">
+				<!-- <li class="menu-item">
+                    <img src="/assets/icons/gear-solid.svg" alt=""  />
+                </li>
+
+                <li class="menu-item">
+                    <img src="/assets/icons/circle-info-solid.svg" alt=""  />
+                </li> -->
+
+				<li (click)="showMenuProfile()" class="menu-user">
+					<img src="/assets/no-avatar.png" alt="" />
+				</li>
+			</ul>
+		</div>
+	</div>
+</header>
+
+<div
+	[class]="{ hidden: isShowMenuProfile === false, fixed: isShowMenuProfile === true }"
+	class="create-room-modal"
+	(click)="showMenuProfile()"
+>
+	<div class="container-fluid">
+		<div class="panel">
+			<ul>
+				<li (click)="onNavigateToProfile($event)" class="btn-outline-danger">
+					<div><span>Your profile</span></div>
+				</li>
+				<li (click)="onLogout($event)" class="btn-outline-danger">
+					<div><span>Logout</span></div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

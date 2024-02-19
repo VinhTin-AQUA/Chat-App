@@ -1,11 +1,11 @@
-.wrapper {
-    @apply flex;
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: auto;
 }
 
-.sidebar {
-    width: 50px;
-}
-
-.content {
-    @apply w-full;
+.container {
+    height: 100%;
+    flex-grow: 1;
 }

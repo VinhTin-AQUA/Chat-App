@@ -3,7 +3,6 @@ import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ConversationComponent } from './chat/conversation/conversation.component';
 import { ChangePasswordConfirmComponent } from './change-password-confirm/change-password-confirm.component';
 import { loggedInGuard } from './shared/guards/logged-in.guard';
 import { chatGuard } from './shared/guards/chat.guard';

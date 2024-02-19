@@ -23,8 +23,7 @@ namespace ChatAppServer.Schema.Queries
                 FullName = user.FullName,
                 PhoneNumber = user.PhoneNumber,
                 AvatarUrl = user.AvatarUrl,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
+                UniqueCodeUser = user.UniqueCodeUser,
             };
         }
 
@@ -37,8 +36,7 @@ namespace ChatAppServer.Schema.Queries
                 FullName = user.FullName,
                 PhoneNumber = user.PhoneNumber,
                 AvatarUrl = user.AvatarUrl,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
+                UniqueCodeUser = user.UniqueCodeUser
             }).ToList();
         }
 
@@ -65,33 +63,13 @@ namespace ChatAppServer.Schema.Queries
             {
                 Email = user.Email!,
                 PhoneNumber = user.PhoneNumber,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
                 FullName = user.FullName,
                 AvatarUrl = user.AvatarUrl,
-                Token = await jwtService.CreateJwt(user)
+                Token = await jwtService.CreateJwt(user),
+                UniqueCodeUser = user.UniqueCodeUser
             });
         }
 
-        public async Task<List<UserType>> SearchUserByName(string name, [Service] IUserRepository userRepository)
-        {
-            if(string.IsNullOrEmpty(name))
-            {
-                return new List<UserType>();
-            }
-            var users = await userRepository.SearchUsersByName(name);
-
-            var userTypes = users.Select(user => new UserType
-            {
-                Email = user.Email!,
-                PhoneNumber = user.PhoneNumber,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
-                FullName = user.FullName,
-                AvatarUrl = user.AvatarUrl,
-            }).ToList();
-
-            return userTypes;
-        }
+  
     }
 }

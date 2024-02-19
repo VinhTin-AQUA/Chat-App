@@ -23,9 +23,8 @@ export const LOGIN = gql`
 					fullName
 					avatarUrl
 					phoneNumber
-					friendIds
-					groupIds
 					token
+					uniqueCodeUser
 				}
 			}
 		}

@@ -5,6 +5,8 @@ const initialState: User = {
 	email: '',
 	fullName: '',
 	avatarUrl: '',
+	phoneNumber: '',
+	uniqueCodeUser: '',
 };
 
 export const UserStore = signalStore({ providedIn: 'root' }, withState(initialState));

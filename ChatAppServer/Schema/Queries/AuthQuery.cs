@@ -25,11 +25,10 @@ namespace ChatAppServer.Schema.Queries
             {
                 Email = user.Email!,
                 PhoneNumber = user.PhoneNumber,
-                FriendIds = user.FriendIds,
-                GroupIds = user.GroupIds,
                 FullName = user.FullName,
                 AvatarUrl = user.AvatarUrl,
-                Token = await jwtService.CreateJwt(user)
+                Token = await jwtService.CreateJwt(user),
+                UniqueCodeUser = user.UniqueCodeUser,
             });
         }
     }

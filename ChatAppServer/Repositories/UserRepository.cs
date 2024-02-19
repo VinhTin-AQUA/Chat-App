@@ -18,11 +18,6 @@ namespace ChatAppServer.Repositories
             userCollection = database.GetCollection<AppUser>(options.Value.UserCollectionName);
         }
 
-        public async Task<List<AppUser>> SearchUsersByName(string name)
-        {
-            var filter = Builders<AppUser>.Filter.Regex(u => u.FullName, new BsonRegularExpression(name, "i"));
-            var users = await userCollection.Find(filter).ToListAsync();
-            return users;
-        }
+ 
     }
 }
