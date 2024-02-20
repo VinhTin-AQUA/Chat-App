@@ -6,6 +6,7 @@ export const GET_GROUPS_OF_USER = gql`
 			id
 			ownerId
 			groupName
+			uniqueCodeGroup
 		}
 	}
 `;

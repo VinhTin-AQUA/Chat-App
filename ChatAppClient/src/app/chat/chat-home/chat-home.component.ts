@@ -3,6 +3,10 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserStore } from '../../shared/stores/user.store';
 import { GroupStore } from '../../shared/stores/group.store';
+import { MessageService } from '../../services/message.service';
+import { Message } from '../../shared/models/message';
+import { Group } from '../../shared/models/group';
+
 
 @Component({
 	selector: 'app-chat-home',
@@ -13,10 +17,17 @@ import { GroupStore } from '../../shared/stores/group.store';
 })
 export class ChatHomeComponent {
 	groupStore = inject(GroupStore);
+	messages: Message[] = [];
+	userStore = inject(UserStore)
+	groupName: string  = '';
 
-	ngOnInit() {
-		
+	constructor(private messageService: MessageService) {
 	}
 
-	private loadMessagesOfFirstGroup() {}
+	onClickGroupItem(group: Group) {
+		this.groupName = group.groupName
+		this.messageService.getMessagesOfGroup(group.uniqueCodeGroup).subscribe((result: any) => {
+			this.messages = result.data.messagesOfGroup
+		})
+	}
 }

@@ -2,6 +2,6 @@
     <router-outlet></router-outlet>
 </div>
 
-@defer (when this.loadingStore.isLoggingIn()) {
+@if(this.loadingStore.isLoggingIn()) {
     <app-logging-in-loading></app-logging-in-loading>
 }

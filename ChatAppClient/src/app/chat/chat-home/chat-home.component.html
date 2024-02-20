@@ -3,14 +3,14 @@
 		<div class="group-container">
 			<div class="group">
 				@for (group of groupStore.groups(); track $index) {
-				<div class="group-item">
+				<div (click)="onClickGroupItem(group)" class="group-item">
 					<span>{{ group.groupName }}</span>
 				</div>
 				}
 			</div>
 		</div>
 
-		@if (groupStore.groups().length === 0) {
+		@if (groupStore.groups().length === 0 || groupName === '') {
 		<div class="instroduce">
 			<div class="content">
 				<p class="p1">Welcome to IGroupCord</p>
@@ -20,42 +20,34 @@
 		} @else {
 		<div class="message-box">
 			<div class="mess-header">
-				<span>UTC2</span>
+				<span>{{groupName}}</span>
 				<div>Menu</div>
 			</div>
 
 			<div class="messages">
+				@for (mess of messages; track $index) { @if (mess.senderId ===
+				userStore.uniqueCodeUser()) {
 				<div class="message-item">
-					<div>Vinh tin</div>
+					<div>{{ mess.senderName }}</div>
 					<div class="message">
 						<span class="content">
-							Asperiores ea atque eveniet suscipit. Voluptate animi eveniet velit
-							nesciunt veniam tempora et ipsam. Minima qui sint repellendus minima
-							quo. Qui provident perferendis ut totam quia. Nesciunt nihil maxime et.
-							Minus qui praesentium. Quasi dolore sequi amet repellendus ipsum amet.
-							Ut alias illum vel quis praesentium. Totam assumenda molestiae aperiam
-							libero et. Et perspiciatis sed. Excepturi natus commodi aut quos.
+							{{ mess.content }}
 						</span>
 						<img src="/assets/no-avatar.png" alt="" />
 					</div>
 				</div>
-
+				} @else {
 				<div class="message-item">
-					<div class="text-right">Thuy</div>
-
+					<div class="text-right">{{ mess.senderName }}</div>
 					<div class="message">
 						<img src="/assets/no-avatar.png" alt="" />
 
 						<span class="content">
-							Asperiores ea atque eveniet suscipit. Voluptate animi eveniet velit
-							nesciunt veniam tempora et ipsam. Minima qui sint repellendus minima
-							quo. Qui provident perferendis ut totam quia. Nesciunt nihil maxime et.
-							Minus qui praesentium. Quasi dolore sequi amet repellendus ipsum amet.
-							Ut alias illum vel quis praesentium. Totam assumenda molestiae aperiam
-							libero et. Et perspiciatis sed. Excepturi natus commodi aut quos.
+							{{ mess.content }}
 						</span>
 					</div>
 				</div>
+				} }
 			</div>
 
 			<div class="message-action">
