@@ -14,7 +14,7 @@ namespace ChatAppServer.Schema.Mutations
 
             var message = new Message
             {
-                SenderId = user.Email!,
+                SenderId = user.UniqueCodeUser!,
                 SenderName = user.FullName,
                 Content = model.Content,
                 AvatarSender = user.AvatarUrl,
@@ -25,7 +25,7 @@ namespace ChatAppServer.Schema.Mutations
 
             return new MessageType
             {
-                SenderId = user.Email!,
+                SenderId = user.UniqueCodeUser!,
                 SenderName = user.FullName,
                 Content = model.Content,
                 AvatarSender = user.AvatarUrl,

@@ -69,5 +69,10 @@ namespace ChatAppServer.Schema.Queries
                 UniqueCodeUser = user.UniqueCodeUser
             });
         }
+
+        public List<string> GetOnlineUsers(string groupName, [Service]ChatService chatService)
+        {
+            return chatService.GetUsersOnlineAGroup(groupName).ToList();
+        }
     }
 }

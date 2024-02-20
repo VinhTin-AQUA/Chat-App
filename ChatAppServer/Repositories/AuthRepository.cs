@@ -38,5 +38,11 @@ namespace ChatAppServer.Repositories
             var r = await signInManager.CheckPasswordSignInAsync(user, password, true);
             return r;
         }
+
+        public AppUser GetUserByUniqueCode(string uniqueCodeUser)
+        {
+            var user = userManager.Users.Where(u => u.UniqueCodeUser == uniqueCodeUser).FirstOrDefault();
+            return user;
+        }
     }
 }

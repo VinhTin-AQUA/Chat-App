@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { GET_MESSAGES_OF_GROUP } from '../graphql/queries/message.query';
+import { SEND_MESSAGE } from '../graphql/mutations/message.mutation';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,16 @@ export class MessageService {
         uniqueCodeGroup: uniqueCodeGroup
       }
     })
+  }
 
+  sendMessage(uniqueCodeGroup: string,email: string, content: string) {
+    return this.apollo.mutate({
+      mutation: SEND_MESSAGE,
+      variables: {
+        uniqueCodeGroup:uniqueCodeGroup,
+        email: email,
+        content: content
+      }
+    })
   }
 }

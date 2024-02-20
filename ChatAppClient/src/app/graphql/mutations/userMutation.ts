@@ -27,3 +27,11 @@ export const CREATE_USER = gql`
 		}
 	}
 `;
+
+export const ADD_USER_TO_GROUP = gql`
+	mutation ($uniqueCodeGroup: String!, $uniqueCodeUser: String!) {
+		addUserToGroup(uniqueCodeGroup: $uniqueCodeGroup, uniqueCodeUser: $uniqueCodeUser) {
+			success
+		}
+	}
+`;

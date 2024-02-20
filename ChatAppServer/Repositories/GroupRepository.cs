@@ -9,12 +9,14 @@ namespace ChatAppServer.Repositories
     public class GroupRepository : IGroupRepository
     {
         private readonly IMongoCollection<Group> groupCollection;
+        private readonly IMongoCollection<AppUser> userCollection;
 
         public GroupRepository(IOptions<MongoSetting> options)
         {
             var client = new MongoClient(options.Value.ConnectionUri);
             var database = client.GetDatabase(options.Value.DatabaseName);
             groupCollection = database.GetCollection<Group>(options.Value.GroupCollectionName);
+            userCollection = database.GetCollection<AppUser>(options.Value.UserCollectionName);
         }
 
         public async Task CreateGroupToUser(Group group)
@@ -24,9 +26,14 @@ namespace ChatAppServer.Repositories
 
         public async Task<List<Group>> GetGroupsOfUser(string ownerId)
         {
-            var filter = Builders<Group>.Filter.Eq("OwnerId", ownerId);
-            var groups = await groupCollection.Find(filter).ToListAsync();
+            var user = await userCollection.Find(u => u.UniqueCodeUser ==  ownerId).FirstOrDefaultAsync();
+            
+
+
+            var groups = await groupCollection.Find(g => user.GroupUniqueCodes.Contains(g.UniqueCodeGroup)).ToListAsync();
             return groups;
         }
+
+
     }
 }

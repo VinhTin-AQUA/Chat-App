@@ -17,8 +17,7 @@ using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Schema.Validators;
 using ChatAppServer.Services.IServices;
 using ChatAppServer.Services;
-using ChatAppServer.Schema.Subcriptions;
-using HotChocolate.AspNetCore.Subscriptions;
+using ChatAppServer.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,7 +117,7 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 // services
 builder.Services.AddTransient<IJwtService, JwtService>();
-
+builder.Services.AddSingleton<ChatService>();
 
 #endregion
 
@@ -128,10 +127,15 @@ builder.Services.AddCors(c =>
     c.AddPolicy("AllowOrigin", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+// signal R
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // enable cors
-app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -139,5 +143,6 @@ app.UseAuthorization();
 //app.MapGet("/", () => "Hello World!");
 app.MapGraphQL();
 app.UseWebSockets();
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();

@@ -36,5 +36,7 @@ namespace ChatAppServer.Schema.Mutations
                 UniqueCodeGroup = group.UniqueCodeGroup,
             };
         }
+
+  
     }
 }

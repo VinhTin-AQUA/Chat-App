@@ -24,5 +24,12 @@ namespace ChatAppServer.Repositories
             var update = Builders<AppUser>.Update.AddToSet("GroupUniqueCodes", uniqueCodeGroup);
             await userCollection.UpdateOneAsync(filter, update);
         }
+
+        public async Task AddUserToGroup(string uniqueCodeUser, string uniqueCodeGroup)
+        {
+            var filter = Builders<AppUser>.Filter.Eq("UniqueCodeUser", uniqueCodeUser);
+            var update = Builders<AppUser>.Update.AddToSet("GroupUniqueCodes", uniqueCodeGroup);
+            await userCollection.UpdateOneAsync(filter, update);
+        }
     }
 }

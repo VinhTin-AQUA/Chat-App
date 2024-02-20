@@ -10,7 +10,7 @@
 			</div>
 		</div>
 
-		@if (groupStore.groups().length === 0 || groupName === '') {
+		@if (groupStore.groups().length === 0 || group === null) {
 		<div class="instroduce">
 			<div class="content">
 				<p class="p1">Welcome to IGroupCord</p>
@@ -20,16 +20,16 @@
 		} @else {
 		<div class="message-box">
 			<div class="mess-header">
-				<span>{{groupName}}</span>
-				<div>Menu</div>
+				<span>{{ group.groupName }}</span>
+				<div (click)="showMessageMenu()">Menu</div>
 			</div>
 
 			<div class="messages">
 				@for (mess of messages; track $index) { @if (mess.senderId ===
 				userStore.uniqueCodeUser()) {
 				<div class="message-item">
-					<div>{{ mess.senderName }}</div>
-					<div class="message">
+					<div class="text-right">{{ mess.senderName }}</div>
+					<div class="message-owner">
 						<span class="content">
 							{{ mess.content }}
 						</span>
@@ -37,9 +37,9 @@
 					</div>
 				</div>
 				} @else {
-				<div class="message-item">
-					<div class="text-right">{{ mess.senderName }}</div>
-					<div class="message">
+				<div class="message-item bg-green-400">
+					<div class="text-left">{{ mess.senderName }}</div>
+					<div class="message-user">
 						<img src="/assets/no-avatar.png" alt="" />
 
 						<span class="content">
@@ -52,12 +52,65 @@
 
 			<div class="message-action">
 				<div class="input-message">
-					<input type="text" />
+					<input [(ngModel)]="content" name="content" type="text" />
 				</div>
 
-				<img src="/assets/icons/paper-plane-solid.svg" alt="" />
+				<img (click)="onSendMessage()" src="/assets/icons/paper-plane-solid.svg" alt="" />
 			</div>
 		</div>
 		}
 	</div>
 </div>
+
+<!-- message menu -->
+@if (isShowMessageMenu === true) {
+<div class="message-menu" (click)="showMessageMenu()">
+	<div class="container">
+		<div class="menu">
+			<button (click)="showAddUser($event)" class="btn-danger">Add user</button>
+			<button (click)="showOnlineUsers()" class="btn-danger">Show online users</button>
+			<button class="btn-danger">Add user</button>
+			<button class="btn-danger">Add user</button>
+		</div>
+	</div>
+</div>
+}
+
+<!-- show add user -->
+@if(isShowAddUser === true) {
+<div class="add-user">
+	<div class="container">
+		<div class="add">
+			<input [(ngModel)]="userCode" name="userCode" type="text" placeholder="Enter user code" />
+			<div class="action">
+				<button (click)="addUserToGroup()" class="btn-danger">Add</button>
+				<button (click)="showAddUser($event)" class="btn-danger">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+}
+
+<!-- online user -->
+@if(isShowOnlineUser === true) {
+	<div class="online-user">
+		<div class="container">
+			<div class="list-container">
+				
+				<div class="online">
+					@for (online of chatService.onlineUsers; track $index) {
+
+						<div class="online-item">
+							{{online}}
+						</div>
+					}
+				</div>
+
+				<div class="action">
+					<button (click)="showOnlineUsers() " class="btn-danger w-full">CLose</button>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+

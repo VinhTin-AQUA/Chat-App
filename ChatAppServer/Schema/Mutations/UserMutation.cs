@@ -45,5 +45,10 @@ namespace ChatAppServer.Schema.Mutations
             });
         }
 
+        public async Task<ResultType> AddUserToGroup(string uniqueCodeUser, string uniqueCodeGroup, [Service]IUserRepository userRepository)
+        {
+            await userRepository.AddUserToGroup(uniqueCodeUser, uniqueCodeGroup);
+            return new ResultType(true, [], null);
+        }
     }
 }

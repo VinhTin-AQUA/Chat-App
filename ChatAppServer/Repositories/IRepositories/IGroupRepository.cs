@@ -6,5 +6,6 @@ namespace ChatAppServer.Repositories.IRepositories
     {
         Task CreateGroupToUser(Group group);
         Task<List<Group>> GetGroupsOfUser(string ownerId);
+        
     }
 }

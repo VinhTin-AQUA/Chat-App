@@ -14,7 +14,7 @@
 }
 
 .group-container .group {
-	@apply p-2 ;
+	@apply p-2;
 
 	.group-item {
 		@apply p-3  bg-red-400 rounded-md mb-2 cursor-pointer;
@@ -48,21 +48,28 @@
 
 	.mess-header {
 		@apply rounded-md h-12 bg-red-400 flex justify-between items-center p-2;
-	}	
-	
-	.messages{
+	}
+
+	.messages {
 		@apply h-full p-2 rounded-md;
 		overflow-y: scroll;
-		
+
 		.message-item {
-			@apply  mb-3;
+			@apply mb-3;
 
 			span {
-
 			}
 
-			.message {
+			.message-user {
 				@apply bg-[#fee2e2] p-1 rounded-md flex justify-start items-start gap-2;
+			}
+
+			.user-name {
+				@apply text-left;
+			}
+
+			.message-owner {
+				@apply bg-[#fee2e2] p-1 rounded-md flex justify-end items-start gap-2;
 			}
 
 			.content {
@@ -79,7 +86,8 @@
 	.message-action {
 		@apply rounded-md h-12 bg-red-400 flex justify-between items-center gap-2 p-2;
 
-		.input-message, input {
+		.input-message,
+		input {
 			@apply w-full;
 		}
 
@@ -92,8 +100,89 @@
 			@apply w-8 cursor-pointer duration-100;
 
 			&:hover {
-				filter: brightness(0) saturate(100%) invert(94%) sepia(17%) saturate(3947%) hue-rotate(297deg) brightness(108%) contrast(94%);
+				filter: brightness(0) saturate(100%) invert(94%) sepia(17%) saturate(3947%)
+					hue-rotate(297deg) brightness(108%) contrast(94%);
 			}
 		}
+	}
+}
+
+//  message menu
+.message-menu {
+	@apply h-screen w-screen fixed top-0 left-0;
+
+	.container {
+	}
+
+	.menu {
+		@apply bg-red-300 w-1/6 p-2 rounded-md;
+		position: absolute;
+		right: 10px;
+		top: 120px;
+
+		&::before {
+			@apply bg-red-300;
+			z-index: -1;
+			content: '';
+			display: block;
+			width: 20px;
+			height: 20px;
+			transform: rotate(45deg);
+			position: absolute;
+			right: 10px;
+			top: -10px;
+			border-radius: 2px;
+		}
+	}
+
+	button {
+		@apply w-full mb-3;
+	}
+}
+
+// add user
+.add-user {
+	@apply h-screen w-screen fixed top-0 left-0;
+	.container {
+		@apply mx-auto flex justify-center items-center h-full;
+	}
+
+	.add {
+		@apply bg-red-300 p-2 rounded-md;
+
+		input {
+			@apply border-none outline-none mb-2 p-2 rounded-md;
+		}
+	}
+
+	.action {
+		@apply flex gap-2;
+		button {
+			@apply w-full;
+		}
+	}
+}
+
+// online users
+.online-user {
+	@apply h-screen w-screen fixed top-0 left-0;
+	.container {
+		@apply mx-auto flex justify-center items-center h-full;
+	}
+
+	.list-container {
+		@apply bg-red-100 flex flex-col justify-between items-center w-full h-full md:h-1/2 md:w-1/2 gap-2 p-2;
+	}
+
+	.online {
+		@apply h-full w-full overflow-y-scroll;
+	}
+
+	.online-item {
+		@apply bg-red-300 mb-2 p-2 rounded-md;
+	}
+
+	.action {
+		@apply w-full;
 	}
 }

@@ -5,6 +5,7 @@ import { UserStore } from '../shared/stores/user.store';
 import { patchState } from '@ngrx/signals';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthService } from './auth.service';
+import { ADD_USER_TO_GROUP } from '../graphql/mutations/userMutation';
 
 @Injectable({
 	providedIn: 'root',
@@ -48,5 +49,15 @@ export class UserService {
 		} else {
 			return true;
 		}
+	}
+
+	addUserToGroup(uniqueCodeUser: string,uniqueCodeGroup: string) {
+		return this.apollo.mutate({
+			mutation: ADD_USER_TO_GROUP,
+			variables: {
+				uniqueCodeUser: uniqueCodeUser,
+				uniqueCodeGroup: uniqueCodeGroup
+			}
+		})
 	}
 }
