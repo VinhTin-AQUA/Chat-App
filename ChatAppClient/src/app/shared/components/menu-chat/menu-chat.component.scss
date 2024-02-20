@@ -39,8 +39,8 @@ header {
 	}
 }
 
-// create room modal
-.create-room-modal {
+// menu profile
+.menu-profile {
 	@apply top-0 left-0 h-screen w-screen;
 	background-color: var(--bg-create-room-chat-home);
 
@@ -76,6 +76,85 @@ header {
 
 		div {
 			// @apply p-2;
+		}
+	}
+}
+
+.join-group-wrapper {
+	@apply fixed top-0 left-0 w-full h-full;
+	background-color: var(--bg-create-room-chat-home);
+	
+	.container-fluid {
+		@apply flex justify-center items-center gap-3 w-full h-full;
+	}
+
+	.action {
+		@apply flex justify-center items-center gap-3 flex-col;
+		background-color: var(--bg-panel-create-chat-room);
+		height: 300px;
+		width: 800px;
+	
+		.search-container {
+			@apply flex gap-2 w-full p-4;
+		}
+
+		.search-group {
+			@apply w-full duration-75 flex justify-center items-center gap-2 rounded-md p-1;
+			color: var(--text-color-chat-home);
+			img {
+				@apply h-10;
+			}
+	
+			input {
+				@apply w-full border-none outline-none p-2 rounded-md;
+			}
+	
+			&:focus-within {
+				// @apply border-none outline-none;
+				box-shadow: 0px 0px 1px 1px red;
+			}
+		}
+
+		.btn {
+			@apply w-1/2 flex gap-2;
+		}
+	}
+}
+
+
+// // create room modal
+.create-room-modal {
+	@apply top-0 left-0 h-screen w-screen;
+	background-color: var(--bg-create-room-chat-home);
+
+	.container {
+		@apply flex justify-center items-center h-full mx-auto;
+	}
+
+	.panel {
+		@apply w-full md:w-1/2 rounded-xl p-5;
+		background-color: var(--bg-panel-create-chat-room);
+
+		form {
+			@apply flex justify-start items-center flex-col;
+
+			.create-form-group,
+			input {
+				@apply w-full;
+			}
+
+			.create-form-group {
+				@apply mb-2;
+			}
+
+			input {
+				@apply border-none outline-none p-2 rounded-md;
+				box-shadow: 0px 0px 1px 1px #dc1d1d;
+			}
+
+			button {
+				@apply w-full md:w-1/2;
+			}
 		}
 	}
 }

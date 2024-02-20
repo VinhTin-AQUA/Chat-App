@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UserStore } from '../../shared/stores/user.store';
+import { GroupStore } from '../../shared/stores/group.store';
 
 @Component({
 	selector: 'app-chat-home',
@@ -10,12 +12,11 @@ import { FormsModule } from '@angular/forms';
 	styleUrl: './chat-home.component.scss',
 })
 export class ChatHomeComponent {
-	isShowCreateRoom: boolean = false;
-  roomCode: string = '';
+	groupStore = inject(GroupStore);
 
-	showCreateRoom() {
-		this.isShowCreateRoom = !this.isShowCreateRoom;
+	ngOnInit() {
+		
 	}
 
-
+	private loadMessagesOfFirstGroup() {}
 }

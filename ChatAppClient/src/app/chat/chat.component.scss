@@ -1,11 +1,9 @@
 .wrapper{
-    display: flex;
-    flex-direction: column;
     height: 100vh;
-    overflow: auto;
+    @apply flex flex-col;
+    min-height: 100%;
 }
 
-.container {
-    height: 100%;
+.container-fluid {
     flex-grow: 1;
 }

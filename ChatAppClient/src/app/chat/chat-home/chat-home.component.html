@@ -1,39 +1,71 @@
 <div class="wrapper">
 	<div class="container-fluid">
+		<div class="group-container">
+			<div class="group">
+				@for (group of groupStore.groups(); track $index) {
+				<div class="group-item">
+					<span>{{ group.groupName }}</span>
+				</div>
+				}
+			</div>
+		</div>
+
+		@if (groupStore.groups().length === 0) {
 		<div class="instroduce">
 			<div class="content">
 				<p class="p1">Welcome to IGroupCord</p>
 				<p class="p2">Connect to everyone</p>
 			</div>
 		</div>
-
-		<div class="action">
-			<button (click)="showCreateRoom()" class="btn-danger">Create new room</button>
-
-			<div class="search-group">
-				<img src="/assets/icons/keyboard-solid.svg" alt="" />
-				<input [(ngModel)]="roomCode" type="text" placeholder="Enter group-id" />
+		} @else {
+		<div class="message-box">
+			<div class="mess-header">
+				<span>UTC2</span>
+				<div>Menu</div>
 			</div>
-			<button [class]="{'invisible': roomCode === ''}" class="btn-outline-danger">Join</button>
-		</div>
-	</div>
-</div>
 
-<div
-	[class]="{ 'hidden': isShowCreateRoom === false, 'fixed': isShowCreateRoom === true }"
-	class="create-room-modal"
->
-	<div class="container">
-		<div class="panel">
-			<form>
-				<div class="create-form-group">
-					<input type="text" placeholder="Password" />
+			<div class="messages">
+				<div class="message-item">
+					<div>Vinh tin</div>
+					<div class="message">
+						<span class="content">
+							Asperiores ea atque eveniet suscipit. Voluptate animi eveniet velit
+							nesciunt veniam tempora et ipsam. Minima qui sint repellendus minima
+							quo. Qui provident perferendis ut totam quia. Nesciunt nihil maxime et.
+							Minus qui praesentium. Quasi dolore sequi amet repellendus ipsum amet.
+							Ut alias illum vel quis praesentium. Totam assumenda molestiae aperiam
+							libero et. Et perspiciatis sed. Excepturi natus commodi aut quos.
+						</span>
+						<img src="/assets/no-avatar.png" alt="" />
+					</div>
 				</div>
-				<div class="flex justify-center items-center gap-4">
-					<button class="btn-danger">Create</button>
-					<button type="button" (click)="showCreateRoom()" class="btn-outline-danger">Close</button>
+
+				<div class="message-item">
+					<div class="text-right">Thuy</div>
+
+					<div class="message">
+						<img src="/assets/no-avatar.png" alt="" />
+
+						<span class="content">
+							Asperiores ea atque eveniet suscipit. Voluptate animi eveniet velit
+							nesciunt veniam tempora et ipsam. Minima qui sint repellendus minima
+							quo. Qui provident perferendis ut totam quia. Nesciunt nihil maxime et.
+							Minus qui praesentium. Quasi dolore sequi amet repellendus ipsum amet.
+							Ut alias illum vel quis praesentium. Totam assumenda molestiae aperiam
+							libero et. Et perspiciatis sed. Excepturi natus commodi aut quos.
+						</span>
+					</div>
 				</div>
-			</form>
+			</div>
+
+			<div class="message-action">
+				<div class="input-message">
+					<input type="text" />
+				</div>
+
+				<img src="/assets/icons/paper-plane-solid.svg" alt="" />
+			</div>
 		</div>
+		}
 	</div>
 </div>

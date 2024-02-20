@@ -18,6 +18,11 @@ namespace ChatAppServer.Repositories
             userCollection = database.GetCollection<AppUser>(options.Value.UserCollectionName);
         }
 
- 
+        public async Task AddGroupUniqueCodeToUser(string email, string uniqueCodeGroup)
+        {
+            var filter = Builders<AppUser>.Filter.Eq("Email", email);
+            var update = Builders<AppUser>.Update.AddToSet("GroupUniqueCodes", uniqueCodeGroup);
+            await userCollection.UpdateOneAsync(filter, update);
+        }
     }
 }

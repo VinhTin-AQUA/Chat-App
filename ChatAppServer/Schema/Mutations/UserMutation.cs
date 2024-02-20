@@ -1,11 +1,9 @@
 ﻿using AppAny.HotChocolate.FluentValidation;
 using ChatAppServer.Models;
 using ChatAppServer.Repositories.IRepositories;
-using ChatAppServer.Schema.Subcriptions;
 using ChatAppServer.Schema.Types;
 using ChatAppServer.Schema.Types.DTOTypes;
 using ChatAppServer.Schema.Validators;
-using HotChocolate.Subscriptions;
 
 namespace ChatAppServer.Schema.Mutations
 {
@@ -27,7 +25,7 @@ namespace ChatAppServer.Schema.Mutations
                 UserName = model.Email,
                 AvatarUrl = model.AvatarUrl,
                 PhoneNumber = "",
-                UniqueCodeUser = Guid.NewGuid().ToString().Substring(0, 8)
+                UniqueCodeUser = Guid.NewGuid().ToString()[..8]
         };
 
             var r = await userRepository.CreateUserAsync(user, model.Password);

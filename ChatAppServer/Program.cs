@@ -94,10 +94,15 @@ builder.Services.AddGraphQLServer()
     .AddQueryType<Query>()
         .AddTypeExtension<UserQuery>()
         .AddTypeExtension<AuthQuery>()
+        .AddTypeExtension<GroupQuery>()
+        .AddTypeExtension<MessageQuery>()
     .AddMutationType<Mutation>()
         .AddTypeExtension<UserMutation>()
+        .AddTypeExtension<GroupMutation>()
+        .AddTypeExtension<MessageMutation>()
     .AddType<UserType>()
     .AddType<ResultType>()
+    .AddType<GroupType>()
     .AddAuthorization()
     .AddFluentValidation();
 
@@ -108,6 +113,8 @@ builder.Services.AddTransient<RegisterInputTypeValidator>();
 // repos
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 // services
 builder.Services.AddTransient<IJwtService, JwtService>();

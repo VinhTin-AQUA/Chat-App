@@ -7,13 +7,13 @@
 
 		<div class="menu-container">
 			<ul class="menu">
-				<!-- <li class="menu-item">
-                    <img src="/assets/icons/gear-solid.svg" alt=""  />
-                </li>
+				<li (click)="showJoinGroup()" class="menu-item">
+					<img src="/assets/icons/magnifying-glass-solid.svg" alt="" />
+				</li>
 
-                <li class="menu-item">
-                    <img src="/assets/icons/circle-info-solid.svg" alt=""  />
-                </li> -->
+				<li (click)="showCreateRoom()" class="menu-item">
+					<img src="/assets/icons/square-plus-regular.svg" alt="" />
+				</li>
 
 				<li (click)="showMenuProfile()" class="menu-user">
 					<img src="/assets/no-avatar.png" alt="" />
@@ -23,9 +23,10 @@
 	</div>
 </header>
 
+<!-- menu profile -->
 <div
 	[class]="{ hidden: isShowMenuProfile === false, fixed: isShowMenuProfile === true }"
-	class="create-room-modal"
+	class="menu-profile"
 	(click)="showMenuProfile()"
 >
 	<div class="container-fluid">
@@ -38,6 +39,72 @@
 					<div><span>Logout</span></div>
 				</li>
 			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- join group -->
+<div
+	class="join-group-wrapper"
+	[class]="{ hidden: isShowJoinGroup === false, fixed: isShowJoinGroup === true }"
+>
+	<div class="container-fluid">
+		<div class="action">
+			
+			<div class="search-container">
+				<div class="search-group">
+					<img src="/assets/icons/keyboard-solid.svg" alt="" />
+					<input type="text" placeholder="Enter group-id" />
+				</div>
+				<div class="search-group">
+					<img src="/assets/icons/lock-solid.svg" alt="" />
+					<input type="text" placeholder="Enter group-password" />
+				</div>
+			</div>
+
+			<div class="btn ">
+				<button (click)="onJoinGroup($event)" class="btn-outline-danger w-1/2">Join</button>
+				<button (click)="showJoinGroup()" class="btn-outline-danger w-1/2">Close</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- create group -->
+<div
+	[class]="{ hidden: isShowCreateRoom === false, fixed: isShowCreateRoom === true }"
+	class="create-room-modal"
+>
+	<div class="container">
+		<div class="panel">
+			<form>
+				@if (errorMessage !== '') {
+					<small class="text-red-500">{{errorMessage}}</small>
+				}
+				<div class="create-form-group">
+					<input
+						[(ngModel)]="groupName"
+						name="groupName"
+						type="text"
+						placeholder="Group name"
+					/>
+				</div>
+				<div class="create-form-group">
+					<input
+						[(ngModel)]="password"
+						name="password"
+						type="text"
+						placeholder="Password"
+					/>
+				</div>
+				<div class="flex justify-center items-center gap-4">
+					<button (click)="onCreateGroup()" class="btn-danger">Create</button>
+					<button type="button" (click)="showCreateRoom()" class="btn-outline-danger">
+						Close
+					</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>

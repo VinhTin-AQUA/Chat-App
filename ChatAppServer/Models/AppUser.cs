@@ -9,5 +9,7 @@ namespace ChatAppServer.Models
         public string FullName { get; set; } = string.Empty;
         public string AvatarUrl { get; set; } = string.Empty;
         public string UniqueCodeUser {  get; set; } = string.Empty;
+
+        public List<string> GroupUniqueCodes { get; set; } = [];
     }
 }
