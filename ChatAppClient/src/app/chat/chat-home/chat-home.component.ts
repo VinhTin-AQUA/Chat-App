@@ -54,6 +54,10 @@ export class ChatHomeComponent {
 			return;
 		}
 
+		if(this.group !== null) {
+			this.chatService.disconnectGroup(this.group.uniqueCodeGroup, this.userStore.fullName())
+		}
+
 		this.group = group;
 		this.messageService.getMessagesOfGroup(group.uniqueCodeGroup).subscribe((result: any) => {
 			this.chatService.messages = [...result.data.messagesOfGroup];

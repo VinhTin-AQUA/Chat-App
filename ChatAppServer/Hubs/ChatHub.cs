@@ -30,9 +30,10 @@ namespace ChatAppServer.Hubs
             {
                 await Clients.Group(onlineUser.GroupName).SendAsync("UserLeft", onlineUser.FullName);
             }
+            await base.OnDisconnectedAsync(exception);
         }
 
-        // người vào 1 group và kết nối với group
+        // người dùng vào 1 group và kết nối với group
         public async Task ConnectToGroup(string uniqueCodeGroup, string userName)
         {
             chatService.AddUserOnline(uniqueCodeGroup, userName, Context.ConnectionId);
@@ -50,24 +51,27 @@ namespace ChatAppServer.Hubs
         // ngắt kết nối khi chuyển url
         public async Task DisConnectGroup(string uniqueCodeGroup)
         {
-            chatService.RemoveUserOnline(Context.ConnectionId);
+            var onlineUser = chatService.RemoveUserOnline(Context.ConnectionId);
+            if (onlineUser != null)
+            {
+                await Clients.Group(onlineUser.GroupName).SendAsync("UserLeft", onlineUser.FullName);
+            }
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, uniqueCodeGroup);
         }
 
         // mời người khác vào group
-        public async Task AddUserToGroup(string uniqueCodeUser, string groupName)
-        {
-            var user = authRepository.GetUserByUniqueCode(uniqueCodeUser);
-            chatService.AddUserOnline(groupName, user.FullName, Context.ConnectionId);
-            await Clients.Caller.SendAsync("AddedUserToGroup", user.FullName);
-        }
+        //public async Task AddUserToGroup(string uniqueCodeUser, string uniqueCodeGroup)
+        //{
+        //    var user = authRepository.GetUserByUniqueCode(uniqueCodeUser);
+        //    chatService.AddUserOnline(uniqueCodeGroup, user.FullName, Context.ConnectionId);
+        //    await Clients.Caller.SendAsync("AddedUserToGroup", user.FullName);
+        //}
 
         // gửi tin nhắn đến group => chuyển về client để người khác nhận tin nhắn
         public async Task SendMessageToGroup(string uniqueCodeGroup, Message message)
         {
             await Clients.OthersInGroup(uniqueCodeGroup).SendAsync("OtherMessageSent", message);
         }
-
 
         // rời group
 

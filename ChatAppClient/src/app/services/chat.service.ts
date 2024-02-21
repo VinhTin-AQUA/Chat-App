@@ -33,7 +33,7 @@ export class ChatService {
 			});
 
 			this.chatConnection.on('AddedUserToGroup', userNameAdded => {
-				console.log(userNameAdded);
+				
 			});
 
 			this.chatConnection.on("UserLeft", (userName) => {
@@ -66,8 +66,10 @@ export class ChatService {
 		});
 	}
 
-
-
+	disconnectGroup(uniqueCodeGroup: string, userName: string) {
+		this.disConnectGroup(uniqueCodeGroup, userName);
+	}
+	
 	async stopConnection(uniqueCodeGroup: string, userName: string) {
 		// disconnect group
 		await this.disConnectGroup(uniqueCodeGroup, userName);
