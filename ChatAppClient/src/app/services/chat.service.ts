@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { environment } from '../../environments/environment.development';
+import { Message } from '../shared/models/message';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ChatService {
 	private chatConnection?: HubConnection;
-  onlineUsers: string[] = [];
+	onlineUsers: string[] = [];
+	messages: Message[] = [];
 
 	constructor() {}
 
@@ -22,13 +24,26 @@ export class ChatService {
 				await this.startConnection();
 			}
 
-			this.chatConnection.on('UserConnected', async (userName: string) => {
-        this.onlineUsers.push(userName);
+			this.chatConnection.on('OtherUserConnected', async (userName: string) => {
+				this.onlineUsers.push(userName);
+			});
+
+			this.chatConnection.on('UserConnected', async (onlineUsers: string[]) => {
+				this.onlineUsers = onlineUsers;
 			});
 
 			this.chatConnection.on('AddedUserToGroup', userNameAdded => {
 				console.log(userNameAdded);
 			});
+
+			this.chatConnection.on("UserLeft", (userName) => {
+				const index = this.onlineUsers.indexOf(userName);
+				this.onlineUsers.splice(index, 1);
+			})
+
+			this.chatConnection.on("OtherMessageSent", (message: Message) => {
+				this.messages.push(message);
+			})
 
 			resolve(1);
 		});
@@ -44,26 +59,39 @@ export class ChatService {
 		});
 	}
 
-	private disConnectGroup(groupName: string, userName: string) {
+	private disConnectGroup(uniqueCodeGroup: string, userName: string) {
 		return new Promise(resolve => {
-			this.chatConnection?.invoke('DisConnectGroup', groupName);
+			this.chatConnection?.invoke('DisConnectGroup', uniqueCodeGroup);
 			resolve(1);
 		});
 	}
 
-	async stopConnection(groupName: string, userName: string) {
+
+
+	async stopConnection(uniqueCodeGroup: string, userName: string) {
 		// disconnect group
-    await this.disConnectGroup(groupName,userName)
+		await this.disConnectGroup(uniqueCodeGroup, userName);
 		// dis connect chat
 		await this.chatConnection?.stop().catch(err => {
 			console.log(err);
 		});
 	}
 
-	joinGroup(groupName: string, userName: string) {
+	joinGroup(uniqueCodeGroup: string, userName: string) {
 		this.chatConnection
-			?.invoke('ConnectToGroup', groupName, userName)
+			?.invoke('ConnectToGroup', uniqueCodeGroup, userName)
 			.then(() => {})
+			.catch(err => {
+				console.log(err);
+			});
+	}
+
+	sendMessageToGroup(uniqueCodeGroup: string, message: Message) {
+		this.chatConnection
+			?.invoke('SendMessageToGroup', uniqueCodeGroup, message)
+			.then(() => {
+
+			})
 			.catch(err => {
 				console.log(err);
 			});

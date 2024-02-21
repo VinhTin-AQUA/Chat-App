@@ -1,4 +1,5 @@
 ﻿
+using ChatAppServer.Models;
 using ChatAppServer.Repositories.IRepositories;
 using ChatAppServer.Services;
 using Microsoft.AspNetCore.SignalR;
@@ -21,27 +22,36 @@ namespace ChatAppServer.Hubs
             return base.OnConnectedAsync();
         }
 
-        public override Task OnDisconnectedAsync(Exception? exception)
+        // disconnect khi refresh trang
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            chatService.RemoveUserOnline(Context.ConnectionId);
-            return base.OnDisconnectedAsync(exception);
+            var onlineUser = chatService.RemoveUserOnline(Context.ConnectionId);
+            if(onlineUser != null)
+            {
+                await Clients.Group(onlineUser.GroupName).SendAsync("UserLeft", onlineUser.FullName);
+            }
         }
 
         // người vào 1 group và kết nối với group
-        public async Task ConnectToGroup(string groupName, string userName)
+        public async Task ConnectToGroup(string uniqueCodeGroup, string userName)
         {
-            chatService.AddUserOnline(groupName, userName, Context.ConnectionId);
+            chatService.AddUserOnline(uniqueCodeGroup, userName, Context.ConnectionId);
 
-            await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-            await Clients.Group(groupName).SendAsync("UserConnected", userName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, uniqueCodeGroup);
+
+            // khi có người dùng khác join group
+            await Clients.Group(uniqueCodeGroup).SendAsync("OtherUserConnected", userName);
+
+            // khi người sử dụng join group
+            await Clients.Client(Context.ConnectionId).SendAsync("UserConnected", ChatService.OnlineUsers[uniqueCodeGroup].Select(p => p.FullName).ToList());
         }
 
 
         // ngắt kết nối khi chuyển url
-        public async Task DisConnectGroup(string groupName)
+        public async Task DisConnectGroup(string uniqueCodeGroup)
         {
             chatService.RemoveUserOnline(Context.ConnectionId);
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, uniqueCodeGroup);
         }
 
         // mời người khác vào group
@@ -52,14 +62,18 @@ namespace ChatAppServer.Hubs
             await Clients.Caller.SendAsync("AddedUserToGroup", user.FullName);
         }
 
+        // gửi tin nhắn đến group => chuyển về client để người khác nhận tin nhắn
+        public async Task SendMessageToGroup(string uniqueCodeGroup, Message message)
+        {
+            await Clients.OthersInGroup(uniqueCodeGroup).SendAsync("OtherMessageSent", message);
+        }
 
-
-        // gửi tin nhắn đến group
 
         // rời group
 
         // được người khác mời vào group
 
-        // người khác nhắn tới group
+
+
     }
 }

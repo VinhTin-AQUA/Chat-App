@@ -18,30 +18,26 @@ namespace ChatAppServer.Services
                     var userOndline = new UserOnline
                     {
                         FullName = userName,
-                        ConnectionId = connectionId
+                        ConnectionId = connectionId,
+                        GroupName = groupName,
                     };
 
                     OnlineUsers[groupName].AddLast(userOndline);
                     return true;
                 }
-
                 var user = OnlineUsers[groupName];
-                //if (user.Contains(userName))
-                //{
-                //    return true;
-                //}
-
                 var userOnline = new UserOnline
                 {
                     FullName = userName,
-                    ConnectionId = connectionId
+                    ConnectionId = connectionId,
+                    GroupName = groupName,
                 };
                 OnlineUsers[groupName].AddLast(userOnline);
                 return true;
             }
         }
 
-        public bool RemoveUserOnline(string connectionId)
+        public UserOnline RemoveUserOnline(string connectionId)
         {
             lock (OnlineUsers)
             {
@@ -52,11 +48,11 @@ namespace ChatAppServer.Services
                         if(user.ConnectionId == connectionId)
                         {
                             userGroups.Value.Remove(user);
-                            break;
+                            return user;
                         }
                     }
                 }
-                return false;
+                return null!;
             }
         }
 

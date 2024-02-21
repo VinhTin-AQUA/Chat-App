@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserStore } from '../../shared/stores/user.store';
 import { GroupStore } from '../../shared/stores/group.store';
@@ -18,7 +18,8 @@ import { UserService } from '../../services/user.service';
 })
 export class ChatHomeComponent {
 	groupStore = inject(GroupStore);
-	messages: Message[] = [];
+	@ViewChild('messinput',{ static: false }) messInput!: ElementRef;
+	@ViewChild('messageBox') private messageBox!: ElementRef;
 	userStore = inject(UserStore);
 	group: Group | null = null;
 	content: string = '';
@@ -38,9 +39,13 @@ export class ChatHomeComponent {
 		await this.chatService.createChatConnection();
 	}
 
+	private messageBoxScrollToBottom() {
+		this.messageBox.nativeElement.scrollTop = this.messageBox.nativeElement.scrollHeight;
+	}
+
 	ngOnDestroy() {
 		if (this.group !== null) {
-			this.chatService.stopConnection(this.group?.groupName, this.userStore.fullName());
+			this.chatService.stopConnection(this.group?.uniqueCodeGroup, this.userStore.fullName());
 		}
 	}
 
@@ -51,9 +56,9 @@ export class ChatHomeComponent {
 
 		this.group = group;
 		this.messageService.getMessagesOfGroup(group.uniqueCodeGroup).subscribe((result: any) => {
-			this.messages = [...result.data.messagesOfGroup];
+			this.chatService.messages = [...result.data.messagesOfGroup];
 		});
-		this.chatService.joinGroup(group.groupName, this.userStore.fullName());
+		this.chatService.joinGroup(group.uniqueCodeGroup, this.userStore.fullName());
 	}
 
 	onSendMessage() {
@@ -67,9 +72,17 @@ export class ChatHomeComponent {
 					senderName: result.data.sendMessage.senderName,
 					timeStamp: new Date(),
 				};
-				console.log(newMess);
 
-				this.messages.push(newMess);
+				// thêm tin nhắn vào client của người gửi
+				this.chatService.messages.push(newMess);
+
+				// thêm tin nhắn vào client của người nhận
+				if (this.group !== null) {
+					this.chatService.sendMessageToGroup(this.group?.uniqueCodeGroup, newMess);
+				}
+				this.content = '';
+				this.messInput.nativeElement.focus();
+				this.messageBoxScrollToBottom();
 			});
 	}
 
@@ -88,6 +101,7 @@ export class ChatHomeComponent {
 				.addUserToGroup(this.userCode, this.group?.uniqueCodeGroup)
 				.subscribe((result: any) => {
 					// console.log(result);
+					this.isShowAddUser = false;
 				});
 		}
 	}

@@ -24,8 +24,8 @@
 				<div (click)="showMessageMenu()">Menu</div>
 			</div>
 
-			<div class="messages">
-				@for (mess of messages; track $index) { @if (mess.senderId ===
+			<div class="messages" #messageBox>
+				@for (mess of this.chatService.messages; track $index) { @if (mess.senderId ===
 				userStore.uniqueCodeUser()) {
 				<div class="message-item">
 					<div class="text-right">{{ mess.senderName }}</div>
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 				} @else {
-				<div class="message-item bg-green-400">
+				<div class="message-item">
 					<div class="text-left">{{ mess.senderName }}</div>
 					<div class="message-user">
 						<img src="/assets/no-avatar.png" alt="" />
@@ -48,11 +48,21 @@
 					</div>
 				</div>
 				} }
+
+				<div class="h-[80px]">
+					<div class="text-left"></div>
+					<div class="message-user">
+						
+
+						<span class="content">
+						</span>
+					</div>
+				</div>
 			</div>
 
 			<div class="message-action">
 				<div class="input-message">
-					<input [(ngModel)]="content" name="content" type="text" />
+					<input #messinput [(ngModel)]="content" name="content" type="text" />
 				</div>
 
 				<img (click)="onSendMessage()" src="/assets/icons/paper-plane-solid.svg" alt="" />
