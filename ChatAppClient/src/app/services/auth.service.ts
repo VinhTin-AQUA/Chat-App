@@ -5,7 +5,6 @@ import { CREATE_USER } from '../graphql/mutations/userMutation';
 import { LoginRequest } from '../shared/models/loginRequest';
 import { LOGIN, REFRESH_TOKEN } from '../graphql/queries/authQuery';
 
-
 @Injectable({
 	providedIn: 'root',
 })
@@ -21,6 +20,9 @@ export class AuthService {
 				password: model.password,
 				reEnterPassword: model.reEnterPassword,
 				avatarUrl: model.avatarUrl,
+			},
+			context: {
+				useMultipart: true,
 			},
 		});
 	}

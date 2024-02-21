@@ -7,10 +7,6 @@
 
 		<div class="menu-container">
 			<ul class="menu">
-				<li (click)="showJoinGroup()" class="menu-item">
-					<img src="/assets/icons/magnifying-glass-solid.svg" alt="" />
-				</li>
-
 				<li (click)="showCreateRoom()" class="menu-item">
 					<img src="/assets/icons/square-plus-regular.svg" alt="" />
 				</li>
@@ -43,33 +39,6 @@
 	</div>
 </div>
 
-<!-- join group -->
-<div
-	class="join-group-wrapper"
-	[class]="{ hidden: isShowJoinGroup === false, fixed: isShowJoinGroup === true }"
->
-	<div class="container-fluid">
-		<div class="action">
-			
-			<div class="search-container">
-				<div class="search-group">
-					<img src="/assets/icons/keyboard-solid.svg" alt="" />
-					<input type="text" placeholder="Enter group-id" />
-				</div>
-				<div class="search-group">
-					<img src="/assets/icons/lock-solid.svg" alt="" />
-					<input type="text" placeholder="Enter group-password" />
-				</div>
-			</div>
-
-			<div class="btn ">
-				<button (click)="onJoinGroup($event)" class="btn-outline-danger w-1/2">Join</button>
-				<button (click)="showJoinGroup()" class="btn-outline-danger w-1/2">Close</button>
-			</div>
-			
-		</div>
-	</div>
-</div>
 
 <!-- create group -->
 <div

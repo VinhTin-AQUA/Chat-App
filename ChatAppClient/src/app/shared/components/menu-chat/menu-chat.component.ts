@@ -22,10 +22,8 @@ export class MenuChatComponent {
 	private userStore = inject(UserStore);
 	private groupStore = inject(GroupStore);
 	isShowCreateRoom: boolean = false;
-	isShowJoinGroup: boolean = false;
 	groupName: string = '';
 	password: string = '';
-	roomCode: string = '';
 	errorMessage: string = '';
 
 	constructor(
@@ -50,10 +48,6 @@ export class MenuChatComponent {
 
 	showCreateRoom() {
 		this.isShowCreateRoom = !this.isShowCreateRoom;
-	}
-
-	showJoinGroup() {
-		this.isShowJoinGroup = !this.isShowJoinGroup;
 	}
 
 	onCreateGroup() {

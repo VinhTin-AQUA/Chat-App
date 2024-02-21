@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { GroupTypeInput } from '../shared/models/groupInputType';
 import { CREATE_GROUP_TO_USER } from '../graphql/mutations/groupMutation';
-import { GET_GROUPS_OF_USER } from '../graphql/queries/group.query';
+import { GET_GROUPS_OF_USER, GET_MEMBERS_OF_GROUP } from '../graphql/queries/group.query';
 
 @Injectable({
 	providedIn: 'root',
@@ -28,5 +28,14 @@ export class GroupService {
 				ownerId: ownerId,
 			},
 		});
+	}
+
+	getMembersOfGroup(uniqueCodeGroup: string) {
+		return this.apollo.query({
+			query: GET_MEMBERS_OF_GROUP,
+			variables: {
+				uniqueCodeGroup: uniqueCodeGroup
+			}
+		})
 	}
 }

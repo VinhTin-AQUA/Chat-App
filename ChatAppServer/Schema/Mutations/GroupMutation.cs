@@ -23,6 +23,7 @@ namespace ChatAppServer.Schema.Mutations
                 Password = model.Password,
                 UniqueCodeGroup = Guid.NewGuid().ToString()[..8],
             };
+            group.Members.Add(user.UniqueCodeUser);
 
             await groupRepository.CreateGroupToUser(group);
             await userRepository.AddGroupUniqueCodeToUser(email, group.UniqueCodeGroup);
@@ -36,7 +37,5 @@ namespace ChatAppServer.Schema.Mutations
                 UniqueCodeGroup = group.UniqueCodeGroup,
             };
         }
-
-  
     }
 }

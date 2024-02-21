@@ -42,7 +42,7 @@ namespace ChatAppServer.Repositories
         public AppUser GetUserByUniqueCode(string uniqueCodeUser)
         {
             var user = userManager.Users.Where(u => u.UniqueCodeUser == uniqueCodeUser).FirstOrDefault();
-            return user;
+            return user!;
         }
     }
 }

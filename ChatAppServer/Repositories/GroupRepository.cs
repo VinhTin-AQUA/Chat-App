@@ -34,6 +34,11 @@ namespace ChatAppServer.Repositories
             return groups;
         }
 
-
+        public async Task<Group> GetGroup(string uniqueCodeGroup)
+        {
+            var filter = Builders<Group>.Filter.Eq("UniqueCodeGroup", uniqueCodeGroup);
+            var group = await groupCollection.Find(filter).FirstOrDefaultAsync();
+            return group;
+        }
     }
 }

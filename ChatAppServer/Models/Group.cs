@@ -14,5 +14,6 @@ namespace ChatAppServer.Models
         public string Password { get; set; } = string.Empty;
         public string UniqueCodeGroup {  get; set; } = string.Empty;
         public List<Message> Messages { get; set; } = [];
+        public List<string> Members { get; set; } = [];
     }
 }

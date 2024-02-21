@@ -17,7 +17,7 @@ import { RegisterRequest } from '../shared/models/registerRequest';
 	styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-	avatarFileName: string = 'No avatar';
+	avatarFileName: string = 'no-avatar.png';
 	backgroundAvatar: string = "url('/assets/no-avatar.png')";
 	avatarAdd: any;
 	registerForm!: FormGroup;
@@ -75,7 +75,7 @@ export class RegisterComponent {
 			fullName: this.registerForm.controls['fullName'].value,
 			password: this.registerForm.controls['password'].value,
 			reEnterPassword: this.registerForm.controls['reEnterPassword'].value,
-			avatarUrl: '',
+			avatarUrl: this.avatarFileName,
 		};
 		this.auth.register(model).subscribe({
 			next: (result: any) => {

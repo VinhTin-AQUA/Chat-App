@@ -19,5 +19,20 @@ namespace ChatAppServer.Schema.Queries
                 UniqueCodeGroup = g.UniqueCodeGroup 
             }).ToList();
         }
+    
+    
+        public async Task<List<string>> GetGroup(string uniqueCodeGroup, [Service] IGroupRepository groupRepository, [Service]IAuthRepository authRepository)
+        {
+            var group = await groupRepository.GetGroup(uniqueCodeGroup);
+
+            List<string> memberNames = [];
+            foreach (var member in group.Members)
+            {
+                var user = authRepository.GetUserByUniqueCode(member);
+                memberNames.Add(user.FullName);
+            }
+
+            return memberNames;
+        }
     }
 }

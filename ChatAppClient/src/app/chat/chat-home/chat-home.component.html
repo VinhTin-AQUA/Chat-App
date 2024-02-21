@@ -52,10 +52,7 @@
 				<div class="h-[80px]">
 					<div class="text-left"></div>
 					<div class="message-user">
-						
-
-						<span class="content">
-						</span>
+						<span class="content"> </span>
 					</div>
 				</div>
 			</div>
@@ -78,9 +75,8 @@
 	<div class="container">
 		<div class="menu">
 			<button (click)="showAddUser($event)" class="btn-danger">Add user</button>
-			<button (click)="showOnlineUsers()" class="btn-danger">Show online users</button>
-			<button class="btn-danger">Add user</button>
-			<button class="btn-danger">Add user</button>
+			<button (click)="showOnlineUsers()" class="btn-danger">Online users</button>
+			<button (click)="showMembers()" class="btn-danger">Members</button>
 		</div>
 	</div>
 </div>
@@ -91,7 +87,15 @@
 <div class="add-user">
 	<div class="container">
 		<div class="add">
-			<input [(ngModel)]="userCode" name="userCode" type="text" placeholder="Enter user code" />
+			@for (err of errorMessage; track $index) {
+				<small class="text-red-700">{{err}}</small><br>
+			}
+			<input
+				[(ngModel)]="userCode"
+				name="userCode"
+				type="text"
+				placeholder="Enter user code"
+			/>
 			<div class="action">
 				<button (click)="addUserToGroup()" class="btn-danger">Add</button>
 				<button (click)="showAddUser($event)" class="btn-danger">Close</button>
@@ -103,24 +107,44 @@
 
 <!-- online user -->
 @if(isShowOnlineUser === true) {
-	<div class="online-user">
-		<div class="container">
-			<div class="list-container">
-				
-				<div class="online">
-					@for (online of chatService.onlineUsers; track $index) {
+<div class="online-user">
+	<div class="container">
+		<div class="list-container">
+			<div class="online">
+				@for (online of chatService.onlineUsers; track $index) {
 
-						<div class="online-item">
-							{{online}}
-						</div>
-					}
+				<div class="online-item">
+					{{ online }}
 				</div>
+				}
+			</div>
 
-				<div class="action">
-					<button (click)="showOnlineUsers() " class="btn-danger w-full">CLose</button>
-				</div>
+			<div class="action">
+				<button (click)="showOnlineUsers()" class="btn-danger w-full">CLose</button>
 			</div>
 		</div>
 	</div>
+</div>
 }
 
+<!-- members -->
+@if(isShowMembers === true) {
+<div class="online-user">
+	<div class="container">
+		<div class="list-container">
+			<div class="online">
+				@for (member of members; track $index) {
+
+				<div class="online-item">
+					{{ member }}
+				</div>
+				}
+			</div>
+
+			<div class="action">
+				<button (click)="showMembers()" class="btn-danger w-full">CLose</button>
+			</div>
+		</div>
+	</div>
+</div>
+}

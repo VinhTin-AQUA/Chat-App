@@ -13,5 +13,6 @@ namespace ChatAppServer.Schema.Types.DTOTypes
         public string ReEnterPassword { get; set; } = string.Empty;
 
         public string AvatarUrl { get; set; } = string.Empty;
+
     }
 }

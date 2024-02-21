@@ -10,10 +10,10 @@ namespace ChatAppServer.Schema.Mutations
     [ExtendObjectType(typeof(Mutation))]
     public class UserMutation
     {
-        public async Task<ResultType> CreateUser([UseFluentValidation, UseValidator<RegisterInputTypeValidator>()]RegisterInputType model, [Service]IAuthRepository userRepository)
+        public async Task<ResultType> CreateUser([UseFluentValidation, UseValidator<RegisterInputTypeValidator>()] RegisterInputType model, [Service] IAuthRepository userRepository)
         {
             var userExist = await userRepository.GetUserByEmail(model.Email);
-            if(userExist != null)
+            if (userExist != null)
             {
                 return new ResultType(false, ["Email already exists"], null);
             }
@@ -26,10 +26,10 @@ namespace ChatAppServer.Schema.Mutations
                 AvatarUrl = model.AvatarUrl,
                 PhoneNumber = "",
                 UniqueCodeUser = Guid.NewGuid().ToString()[..8]
-        };
+            };
 
             var r = await userRepository.CreateUserAsync(user, model.Password);
-            if(r.Succeeded == false)
+            if (r.Succeeded == false)
             {
                 var err = r.Errors.Select(e => e.Description).ToList();
                 return new ResultType(false, err, null);
@@ -38,17 +38,33 @@ namespace ChatAppServer.Schema.Mutations
             return new ResultType(true, [], new UserType
             {
                 Email = user.Email,
-                PhoneNumber= user.PhoneNumber,
+                PhoneNumber = user.PhoneNumber,
                 FullName = user.FullName,
                 AvatarUrl = user.AvatarUrl,
-                UniqueCodeUser = "tinh sau"
+                UniqueCodeUser = user.UniqueCodeUser,
+                Token = "",
             });
         }
 
-        public async Task<ResultType> AddUserToGroup(string uniqueCodeUser, string uniqueCodeGroup, [Service]IUserRepository userRepository)
+        public async Task<ResultType> AddUserToGroup(string uniqueCodeUser, string uniqueCodeGroup, [Service] IUserRepository userRepository, [Service]IAuthRepository authRepository)
         {
             await userRepository.AddUserToGroup(uniqueCodeUser, uniqueCodeGroup);
-            return new ResultType(true, [], null);
+            var user = authRepository.GetUserByUniqueCode(uniqueCodeUser);
+
+            if(user == null)
+            {
+                return new ResultType(false, ["User not found"], null);
+            }
+
+            return new ResultType(true, [], new UserType
+            {
+                AvatarUrl = user.AvatarUrl,
+                Email = user.Email!,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Token = "",
+                UniqueCodeUser = user.UniqueCodeUser,
+            });
         }
     }
 }

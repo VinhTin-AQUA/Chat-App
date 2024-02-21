@@ -10,3 +10,9 @@ export const GET_GROUPS_OF_USER = gql`
 		}
 	}
 `;
+
+export const GET_MEMBERS_OF_GROUP = gql`
+	query ($uniqueCodeGroup: String!) {
+		group(uniqueCodeGroup: $uniqueCodeGroup)
+	}
+`;

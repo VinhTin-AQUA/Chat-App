@@ -7,5 +7,6 @@
         public string GroupName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string UniqueCodeGroup { get; set; } = string.Empty;
+        public List<string> Members { get; set; } = [];
     }
 }

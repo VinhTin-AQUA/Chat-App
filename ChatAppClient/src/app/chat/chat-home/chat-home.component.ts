@@ -8,6 +8,8 @@ import { Message } from '../../shared/models/message';
 import { Group } from '../../shared/models/group';
 import { ChatService } from '../../services/chat.service';
 import { UserService } from '../../services/user.service';
+import { User } from '../../shared/models/user';
+import { GroupService } from '../../services/group.service';
 
 @Component({
 	selector: 'app-chat-home',
@@ -24,15 +26,20 @@ export class ChatHomeComponent {
 	group: Group | null = null;
 	content: string = '';
 	userCode: string = '';
+	members: string[] = [];
 
 	isShowMessageMenu: boolean = false;
 	isShowAddUser: boolean = false;
 	isShowOnlineUser: boolean = false;
+	isShowMembers: boolean = false;
+
+	errorMessage: string[]=[]
 
 	constructor(
 		private messageService: MessageService,
 		public chatService: ChatService,
-		private userService: UserService
+		private userService: UserService,
+		private groupService: GroupService
 	) {}
 
 	async ngOnInit() {
@@ -57,12 +64,20 @@ export class ChatHomeComponent {
 		if(this.group !== null) {
 			this.chatService.disconnectGroup(this.group.uniqueCodeGroup, this.userStore.fullName())
 		}
+		
 
 		this.group = group;
 		this.messageService.getMessagesOfGroup(group.uniqueCodeGroup).subscribe((result: any) => {
 			this.chatService.messages = [...result.data.messagesOfGroup];
 		});
 		this.chatService.joinGroup(group.uniqueCodeGroup, this.userStore.fullName());
+
+		if(this.members.length === 0 && this.group !== null) {
+			this.groupService.getMembersOfGroup(this.group?.uniqueCodeGroup)
+			.subscribe((result: any) => {
+				this.members = result.data.group
+			})
+		}
 	}
 
 	onSendMessage() {
@@ -104,13 +119,24 @@ export class ChatHomeComponent {
 			this.userService
 				.addUserToGroup(this.userCode, this.group?.uniqueCodeGroup)
 				.subscribe((result: any) => {
-					// console.log(result);
+
+					if(result.data.addUserToGroup.success === false) {
+						this.errorMessage = result.data.addUserToGroup.errorMessages;
+						return;
+					}
+					this.errorMessage = [];
 					this.isShowAddUser = false;
+					this.members = [...this.members, result.data.addUserToGroup.data.fullName]
+					this.userCode = '';
 				});
 		}
 	}
 
 	showOnlineUsers() {
 		this.isShowOnlineUser = !this.isShowOnlineUser;
+	}
+
+	showMembers() {
+		this.isShowMembers = !this.isShowMembers;
 	}
 }

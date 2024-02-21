@@ -10,5 +10,6 @@ namespace ChatAppServer.Schema.Types
         public string? PhoneNumber { get; set; } = string.Empty;
         public string Token { get; set; } = string.Empty;
         public string UniqueCodeUser { get; set; } = string.Empty;
+
     }
 }
